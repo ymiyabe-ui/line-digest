@@ -1,0 +1,214 @@
+// 案内の索引データ。宮部が手動で整理して更新する。
+// 載せない：PayPay ID／Zoomの会議ID・パスコード／個人の氏名（担当は役職表記）。
+// ref は元投稿の日時（トークで探すための目印）。
+window.DIGEST = {
+  updated: "2026-09-30",
+  todos: [
+    {
+      id: "hoiku-2026aki",
+      title: "報恩講・秋の集い 保育・親子聴聞部屋の申込",
+      due: [
+        { label: "一次締切", date: "2026-09-30" },
+        { label: "二次締切", date: "2026-10-03", note: "終日まで。過ぎると対応できない可能性あり" }
+      ],
+      target: "お子さん連れで参加される方（保育・親子聴聞部屋）",
+      note: "保育は10/24(土)・25(日)・26(月)の3日間。期限後の変更は地区長・副地区長へ。",
+      links: [{ label: "申込フォーム（Web版）", url: "https://script.google.com/macros/s/AKfycbynpe-gRc4mZYIEgTmSO_U-KpE3LRzt35FkvLATDMTDBoL61_7EvFAg8gIbDEcDZ9Rr/exec" }],
+      ref: "9/22 17:29"
+    },
+    {
+      id: "san-tan-question",
+      title: "仏法讃嘆（青年学友クラス）への質問募集",
+      due: [
+        { label: "一次", date: "2026-09-30" },
+        { label: "二次", date: "2026-10-07" }
+      ],
+      target: "秋の集いの仏法讃嘆に参加する方",
+      note: "ご著書・教学・求道・進路・その他から自由に。",
+      links: [{ label: "質問入力フォーム", url: "https://forms.gle/5mz1kXmTjkgDaKCaA" }],
+      ref: "9/28 22:19"
+    },
+    {
+      id: "san-tan-class",
+      title: "秋の集い 仏法讃嘆のクラス分け申込",
+      due: [{ label: "一次締切", date: "2026-09-20", note: "以降の希望は随時入力" }],
+      target: "秋の集いに参加する方",
+      note: "参加申込は「行事/交通/宿泊」と「クラス分け」の2つのフォームに入力。",
+      links: [{ label: "クラス分けフォーム", url: "https://forms.gle/d6SuYxYhAvTgF5pK7" }],
+      ref: "9/14 23:28／9/28 22:19"
+    },
+    {
+      id: "aki-sanka",
+      title: "報恩講・秋の集い 行事／交通／宿泊の申込",
+      due: [{ label: "同朋の里宿泊 地区内締切", date: "2026-09-23", note: "以降の希望は相談" }],
+      target: "秋の集い（10/23〜28）に参加する方",
+      note: "変更時は再送信でOK。参加費などの納入は行事ごとに個別案内。",
+      links: [
+        { label: "行事/交通/宿泊 申込フォーム", url: "https://forms.gle/sbLoZdCKiwsDGH5Y7" },
+        { label: "おとき（食事）フォーム", url: "https://forms.gle/AU2ZPT9TPYX583RB6" }
+      ],
+      ref: "9/21 22:40／9/23 15:27"
+    },
+    {
+      id: "kotsu-1004",
+      title: "10/4(日)のご縁 交通の希望連絡",
+      due: [],
+      target: "10/4のご縁に交通（乗り合い）で行きたい方",
+      note: "往路 10/3(土)午前発・復路 10/4(日)21〜22時ごろ着。締切の記載なし、車両手配の都合で早めに。集合場所・宿泊場所・運転可否を添えて連絡。",
+      links: [],
+      ref: "9/28 22:26"
+    },
+    {
+      id: "kotsu-aki",
+      title: "秋の集い 交通の希望連絡（調整中）",
+      due: [],
+      target: "秋の集いに交通（乗り合い）で行きたい方",
+      note: "日ごとの出発・宿泊の希望をコメントで連絡。チャイルドシート貸出可。乗車人数により希望の時間帯は難しい場合あり。",
+      links: [],
+      ref: "9/28 22:27"
+    },
+    {
+      id: "kyogaku-1012",
+      title: "10月 教学試験の受験申込",
+      due: [{ label: "受験申込 締切", date: "2026-10-05", time: "20:30", note: "各班長さん経由で連絡" }],
+      target: "10/12の教学試験を受験する方",
+      note: "事前に模試で合格していること。連絡内容：氏名（フルネーム）・学徒番号・受験日時・受験する号（ハーフ受験は前半/後半）。お布施は1〜9号3,000円以上（学生2,000円〜）、運営お布施500円以上〜、試験監督へ現金またはPayPay（当日可）。",
+      links: [],
+      ref: "9/20 16:06"
+    },
+    {
+      id: "shirado",
+      title: "特別装幀版『白道燃ゆ』の申込",
+      due: [{ label: "地区内締切", date: "2026-09-25" }],
+      target: "希望する方",
+      note: "納入は会計補へ（PayPay。難しい場合は相談）。",
+      links: [{ label: "申込フォーム", url: "https://forms.gle/PWD3KdYD4naReb74A" }],
+      ref: "9/15 23:40"
+    },
+    {
+      id: "kaicho-zadankai",
+      title: "9/26 会長座談会（代表施主・施主）の希望入力",
+      due: [
+        { label: "一次", date: "2026-09-18" },
+        { label: "最終", date: "2026-09-25" }
+      ],
+      target: "代表施主・施主を希望する方",
+      note: "記載例：本部・支部/地区。",
+      links: [{ label: "入力フォーム", url: "https://forms.gle/pUPtQTpZ8oLx9FR37" }],
+      ref: "9/18 22:31"
+    },
+    {
+      id: "calendar-r9",
+      title: "R9年カレンダーの希望",
+      due: [{ label: "地区内締切", date: "2026-09-22" }],
+      target: "希望する方",
+      note: "お布施の目安は1点あたり3,000円。納入は会計補へ（PayPay）。",
+      links: [{ label: "申込フォーム", url: "https://forms.gle/zYsuzAeaKFokUVrH6" }],
+      ref: "9/19 22:54"
+    },
+    {
+      id: "kotsu-hokuriku",
+      title: "9/27 北陸報恩講 交通の希望連絡",
+      due: [],
+      target: "交通（乗り合い）で行きたい方",
+      note: "往路9/26(土)・復路9/27(日)。お子さん連れも乗車可。",
+      links: [],
+      ref: "9/22 05:15"
+    },
+    {
+      id: "f-kan",
+      title: "F館宿泊の希望連絡",
+      due: [{ label: "連絡期限", date: "2026-09-20" }],
+      target: "F館宿泊を希望する方（10/23〜28）",
+      note: "ホテルがかなり埋まっているとのこと。",
+      links: [],
+      ref: "9/6 06:12"
+    },
+    {
+      id: "tannisho-fee",
+      title: "歎異抄大学（9/13 ビッグサイト）参加費の納入",
+      due: [{ label: "地区内納入", date: "2026-09-06" }],
+      target: "班長・大班長経由で申込済みの方",
+      note: "納入先は会計補（PayPay。難しい場合は相談）。一般3,000円／身障者と付添い1,500円／大学生1,000円／高校生以下500円／未就学児無料／オンライン配信1,000円。",
+      links: [],
+      ref: "9/4 11:10"
+    }
+  ],
+  events: [
+    {
+      id: "ev-taiwa-0930",
+      title: "先生と学徒との対話のご縁＋振り返り勉強会",
+      start: "2026-09-30", time: "13:30〜14:30（1階）／15:00〜16:30 勉強会（2階）",
+      place: "自由が丘会館",
+      note: "今回は『なぜ生きる』の「はじめに」と1部1章の質問への回答。",
+      ref: "9/30 08:48"
+    },
+    {
+      id: "ev-1004",
+      title: "10/4(日)のご縁",
+      start: "2026-10-04", time: "",
+      place: "",
+      note: "交通の希望は上の「10/4のご縁 交通」を参照。",
+      ref: "9/28 22:26"
+    },
+    {
+      id: "ev-kyogaku",
+      title: "10月 教学試験",
+      start: "2026-10-12", time: "14:00〜16:00",
+      place: "自由が丘会館",
+      note: "受験申込は10/5(月)20:30まで。",
+      ref: "9/20 16:06"
+    },
+    {
+      id: "ev-aki",
+      title: "報恩講・秋の集い",
+      start: "2026-10-23", end: "2026-10-28", time: "",
+      place: "",
+      note: "保育・親子聴聞部屋は10/24(土)・25(日)・26(月)。",
+      ref: "9/6 06:12／9/21 22:40"
+    },
+    {
+      id: "ev-tannisho",
+      title: "歎異抄大学",
+      start: "2026-09-13", time: "",
+      place: "ビッグサイト",
+      note: "連絡事項のまとめあり。",
+      links: [{ label: "連絡事項（Drive）", url: "https://drive.google.com/file/d/1ROdjOq7zxCuDx4JSXxqi7WB4SUXfLIDT/view?usp=drivesdk" }],
+      ref: "9/8 12:12"
+    },
+    {
+      id: "ev-oyako-0920",
+      title: "親子行事（勉強会）",
+      start: "2026-09-20", time: "13:30〜15:00",
+      place: "自由が丘会館",
+      note: "『顕真』8月号・9月号を持参。",
+      ref: "9/12 12:31"
+    },
+    {
+      id: "ev-zadankai",
+      title: "会長座談会／青年学友座談会",
+      start: "2026-09-26", time: "17:00〜（青年学友座談会）",
+      place: "大講堂",
+      note: "",
+      ref: "9/18 22:31／9/22 05:15"
+    },
+    {
+      id: "ev-hokuriku",
+      title: "北陸報恩講",
+      start: "2026-09-27", time: "",
+      place: "二千畳",
+      note: "13:00 正本堂2階玄関で顕正新聞用の写真撮影（青年部関東地区の3地区分割の紹介）。",
+      ref: "9/25 18:34／9/27 07:56"
+    }
+  ],
+  reads: [
+    { date: "2026-09-25", title: "学徒メルマガ「明日ありと思う心は」", url: "https://www.gkt.jp/#/link/ks?p=28418" },
+    { date: "2026-09-25", title: "ご著書に親しむ至福の時間（「平生業成」のご教導）", url: "https://www.gkt.jp/#/link/ks?p=28279" },
+    { date: "2026-09-15", title: "顕正新聞ピックアップ：【教学版】271 四苦八苦", url: "https://www.gkt.jp/#/link/ks?p=28239" },
+    { date: "2026-09-15", title: "顕正新聞ピックアップ：両国会館で親子行事（つぶやきサロン）", url: "https://www.gkt.jp/#/link/ks?p=28283" },
+    { date: "2026-09-11", title: "顕正新聞8/15号：多摩に法城、感動の出航", url: "https://www.gkt.jp/#/link/ks?p=28336" },
+    { date: "2026-09-11", title: "顕正新聞8/15号：新支部誕生で慶びも倍増", url: "https://www.gkt.jp/#/link/ks?p=28338" },
+    { date: "2026-09-01", title: "顕正新聞ピックアップ：高森先生 怒濤のご生涯", url: "https://www.gkt.jp/#/link/ks?p=28162" },
+    { date: "2026-09-01", title: "顕正新聞ピックアップ：タイ・バンコクで映画上映会", url: "https://www.gkt.jp/#/link/ks?p=28134" }
+  ]
+};
