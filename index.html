@@ -31,7 +31,8 @@
   h3{font-size:13px;margin:16px 0 6px;color:var(--sub);display:flex;align-items:center;gap:6px}
   h3 i{width:10px;height:10px;border-radius:50%;display:inline-block}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px}
-  .card.done{opacity:.55}
+  .card.done{opacity:.6}
+  .card.done .title,.card.done .dues,.card.done .small{text-decoration:line-through}
   .row{display:flex;gap:10px;align-items:flex-start}
   .row input[type=checkbox]{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--accent)}
   .title{font-weight:700}
@@ -64,7 +65,7 @@
 <div class="wrap">
   <div class="top"><h1>案内まとめ｜締切と行事</h1><button id="themeBtn" type="button"></button></div>
   <div class="meta" id="meta"></div>
-  <div class="notice">トークの案内を手動で整理した<b>索引</b>です。金額・納入先などの詳細と最新の内容は、各項目の「元投稿」の日時でトークを確認してください。各案内の左にある<b>四角いチェック欄（☐）</b>を押して☑にすると「済」になり、下の「済にしたもの」へ移ります。チェックはこの端末の中だけに保存され、他の人には見えません。</div>
+  <div class="notice">トークの案内を手動で整理した<b>索引</b>です。金額・納入先などの詳細と最新の内容は、各項目の「元投稿」の日時でトークを確認してください。各案内の左にある<b>四角いチェック欄（☐）</b>を押して☑にすると「済」になり、その案内に取り消し線が付きます（もう一度押すと元に戻ります）。チェックはこの端末の中だけに保存され、他の人には見えません。</div>
 
   <div class="sync" id="sync" hidden>
     <b>学徒番号で「済」を保存する（任意）</b>
@@ -88,7 +89,6 @@
   <h2>これからの行事</h2>
   <div id="events"></div>
 
-  <details id="doneWrap"><summary id="doneSum">済にしたもの</summary><div id="done"></div></details>
   <details id="pastWrap"><summary id="pastSum">締切を過ぎたもの・終わった行事</summary><div id="past"></div></details>
   <details><summary>読み物（新聞・メルマガなど）</summary><div id="reads"></div></details>
 
@@ -266,20 +266,19 @@
     document.getElementById("meta").textContent =
       "最終更新："+fmt(D.updated)+"／今日："+fmt(today0.getFullYear()+"-"+String(today0.getMonth()+1).padStart(2,"0")+"-"+String(today0.getDate()).padStart(2,"0"));
 
-    var open = [], noDue = [], expired = [], done = [];
+    var open = [], noDue = [], expired = [];
     D.todos.forEach(function(t){
-      if(store[t.id]) done.push(t);
-      else if(isExpired(t)) expired.push(t);
+      if(isExpired(t)) expired.push(t);
       else if(!t.due.length) noDue.push(t);
       else open.push(t);
     });
     open.sort(function(a,b){ return nextDue(a).date < nextDue(b).date ? -1 : 1; });
 
     // サマリー
-    var cnt = {today:0, soon:0};
-    open.forEach(function(t){ var n=dayDiff(nextDue(t).date); if(n===0) cnt.today++; else if(n<=3) cnt.soon++; });
+    var cnt = {today:0, soon:0}, openN = 0;
+    open.forEach(function(t){ if(store[t.id]) return; openN++; var n=dayDiff(nextDue(t).date); if(n===0) cnt.today++; else if(n<=3) cnt.soon++; });
     var s = clear("summary");
-    [["今日まで", cnt.today, cnt.today?"var(--today)":""],["3日以内", cnt.soon, cnt.soon?"var(--soon)":""],["未対応（期限あり）", open.length, ""]].forEach(function(x){
+    [["今日まで", cnt.today, cnt.today?"var(--today)":""],["3日以内", cnt.soon, cnt.soon?"var(--soon)":""],["未対応（期限あり）", openN, ""]].forEach(function(x){
       var b = el("div","sum"); var n = el("b",null,String(x[1])); if(x[2]) n.style.color=x[2];
       b.appendChild(n); b.appendChild(el("span",null,x[0])); s.appendChild(b);
     });
@@ -306,9 +305,6 @@
     if(!evUp.length) eb.appendChild(el("div","empty","予定されている行事はありません。"));
 
     // 済
-    var db = clear("done"); done.forEach(function(t){ db.appendChild(todoCard(t)); });
-    document.getElementById("doneWrap").style.display = done.length ? "" : "none";
-    document.getElementById("doneSum").textContent = "済にしたもの（"+done.length+"件）";
 
     // 過去
     var pb = clear("past");
