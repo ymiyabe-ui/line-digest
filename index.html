@@ -37,8 +37,8 @@
   .row input[type=checkbox]{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--accent)}
   .title{font-weight:700}
   .badge{display:inline-block;font-size:12px;font-weight:700;color:#fff;border-radius:999px;padding:1px 9px;margin-right:6px;vertical-align:1px}
-  .small.alert{color:var(--today);font-weight:700}
-  .small.alert a{color:inherit;text-decoration:underline}
+  .contact{margin:8px 0;color:var(--today);font-weight:700;font-size:14px}
+  .contact a{color:inherit;text-decoration:underline}
   .dues{margin:6px 0 0;padding:0;list-style:none;font-size:14px}
   .dues li{padding:1px 0}
   .dues .past{color:var(--sub);text-decoration:line-through}
@@ -67,6 +67,7 @@
 <div class="wrap">
   <div class="top"><h1>案内まとめ｜締切と行事</h1><button id="themeBtn" type="button"></button></div>
   <div class="meta" id="meta"></div>
+  <div class="contact">担当者など不明点やご質問は<a href="https://line.me/ti/p/aS7uMPmBbM" target="_blank" rel="noopener noreferrer">宮部（LINEはこちら）</a>までお願いします。</div>
   <div class="notice">トークの案内を手動で整理した<b>索引</b>です。金額・納入先などの詳細と最新の内容は、各項目の「元投稿」の日時でトークを確認してください。各案内の左にある<b>四角いチェック欄（☐）</b>を押して☑にすると「済」になり、その案内に取り消し線が付きます（もう一度押すと元に戻ります）。チェックはこの端末の中だけに保存され、他の人には見えません。</div>
 
   <div class="sync" id="sync" hidden>
@@ -233,11 +234,6 @@
     }
     if(t.target) body.appendChild(el("div","small","対象："+t.target));
     if(t.note) body.appendChild(el("div","small",t.note));
-    if(t.alert){
-      var al = el("div","small alert", t.alert.text+" ");
-      if(t.alert.url){ var aa = el("a",null,t.alert.urlLabel||t.alert.url); aa.href=t.alert.url; aa.target="_blank"; aa.rel="noopener noreferrer"; al.appendChild(aa); }
-      body.appendChild(al);
-    }
     if(t.links && t.links.length){
       var ln = el("div","links");
       t.links.forEach(function(l){
