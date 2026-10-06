@@ -185,7 +185,8 @@
                       .sort(function(a,b){ return a.date<b.date?-1:1; });
     return future[0] || null;
   }
-  function isExpired(t){ return t.due.length>0 && !nextDue(t); }
+  // 締切のない案内（交通など）は until（行事の日付）を過ぎたら過ぎたものへ移す
+  function isExpired(t){ return t.due.length>0 ? !nextDue(t) : !!(t.until && dayDiff(t.until) < 0); }
 
   var LEVELS = [
     {key:"today", label:"今日まで", color:"var(--today)", test:function(n){return n===0;}},
@@ -320,7 +321,7 @@
       c.appendChild(el("div","small",fmt(r.date))); c.appendChild(a); rb.appendChild(c);
     });
   }
-  function nextDueLast(t){ return t.due.map(function(d){return d.date;}).sort().pop(); }
+  function nextDueLast(t){ return t.due.length ? t.due.map(function(d){return d.date;}).sort().pop() : (t.until||""); }
 
   render();
   syncUi();
