@@ -8,14 +8,14 @@
 <style>
   :root{
     --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
-    --accent:#2f6f5e; --today:#c0392b; --link:#3d6b5e; --btn:#2f6f5e; --sat:#2a5db0; --sun:#c0392b;
+    --accent:#2f6f5e; --today:#c0392b; --link:#3d6b5e; --btn:#2f6f5e; --sat:#2a5db0; --sun:#c0392b; --soon:#d9822b; --week:#b59a2f; --later:#5b7c99;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-      --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c;}
+      --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc;}
   }
   :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-    --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c;}
+    --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif}
   .wrap{max-width:720px;margin:0 auto;padding:16px}
@@ -47,7 +47,10 @@
   .small{font-size:13px;color:var(--sub);margin-top:4px}
   .links a{display:inline-block;margin:10px 0 4px;padding:6px 14px;border:1px solid var(--btn);border-radius:8px;background:var(--btn);color:#fff;text-decoration:none;font-size:14px}
   .rec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px}
+  .rec{display:flex;align-items:center;gap:10px}
+  .rec .body{flex:1;min-width:0}
   .rec .t{font-weight:700}
+  .rec .left{flex:none;font-size:14px;font-weight:700;color:#fff;border-radius:999px;padding:3px 12px;white-space:nowrap}
   .rec.past{opacity:.6}
   footer{margin:28px 0 8px;font-size:12px;color:var(--sub);text-align:center}
 </style>
@@ -83,7 +86,7 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610071247"></script>
+<script src="data.js?v=202610071248"></script>
 <script>
 (function(){
   var G = window.GOEN;
@@ -135,8 +138,16 @@
   G.recordings.slice().sort(function(a,b){ return a.until<b.until?-1:1; }).forEach(function(r){
     var past = dayDiff(r.until) < 0;
     var c = el("div","rec"+(past?" past":""));
-    c.appendChild(el("div","t","先生と学徒との対話（"+wareki(r.date)+"）"));
-    c.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+fmt(r.until)+" "+r.until_time+"まで）" : fmt(r.until)+" "+r.until_time+" まで視聴できます"));
+    var body = el("div","body");
+    body.appendChild(el("div","t","先生と学徒との対話（"+wareki(r.date)+"）"));
+    body.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+fmt(r.until)+" "+r.until_time+"まで）" : fmt(r.until)+" "+r.until_time+" まで視聴できます"));
+    c.appendChild(body);
+    // 視聴期限までの残り日数を、案内まとめの締切と同じ色分けで右側に出す
+    if(!past){
+      var n = dayDiff(r.until), b = el("span","left", n===0 ? "今日まで" : "あと"+n+"日");
+      b.style.background = n===0 ? "var(--today)" : n<=3 ? "var(--soon)" : n<=7 ? "var(--week)" : "var(--later)";
+      c.appendChild(b);
+    }
     rb.appendChild(c);
   });
 })();
