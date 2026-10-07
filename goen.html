@@ -8,14 +8,14 @@
 <style>
   :root{
     --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
-    --accent:#2f6f5e; --today:#c0392b; --link:#3d6b5e; --btn:#2f6f5e;
+    --accent:#2f6f5e; --today:#c0392b; --link:#3d6b5e; --btn:#2f6f5e; --sat:#2a5db0; --sun:#c0392b;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-      --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79;}
+      --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c;}
   }
   :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-    --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79;}
+    --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif}
   .wrap{max-width:720px;margin:0 auto;padding:16px}
@@ -39,6 +39,8 @@
   .item{display:flex;gap:12px;align-items:baseline;padding:8px 12px;border-top:1px solid var(--line);font-size:15px}
   .item:first-child{border-top:0}
   .item .d{flex:none;min-width:7.5em;font-weight:700;font-variant-numeric:tabular-nums}
+  .item .sat{color:var(--sat)}
+  .item .sun{color:var(--sun)}
   .item.past{color:var(--sub);opacity:.55}
   .item.next{box-shadow:inset 4px 0 0 var(--accent)}
   .tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:1px}
@@ -81,7 +83,7 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610071246"></script>
+<script src="data.js?v=202610071247"></script>
 <script>
 (function(){
   var G = window.GOEN;
@@ -101,6 +103,7 @@
   function dayDiff(s){ return Math.round((parse(s)-today0)/86400000); }
   function fmt(s){ var d=parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"; }
   function wareki(s){ var d=parse(s); return "令和"+(d.getFullYear()-2018)+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"; }
+  function dayEl(s){ var w=parse(s).getDay(); return el("span", w===6?"sat":w===0?"sun":null, fmt(s)); }
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
   document.getElementById("meta").textContent = "今日："+fmt(today0.getFullYear()+"-"+String(today0.getMonth()+1).padStart(2,"0")+"-"+String(today0.getDate()).padStart(2,"0"));
@@ -115,7 +118,11 @@
     if(ym !== cur){ cur = ym; box.appendChild(el("h3",null,ym)); list = el("div","list"); box.appendChild(list); }
     var past = dayDiff(s.end||s.date) < 0;
     var row = el("div","item"+(past?" past":"")+(s===next?" next":""));
-    row.appendChild(el("span","d", fmt(s.date)+(s.end?"〜"+fmt(s.end):"")));
+    // 日付は土曜を青、日曜を赤にする（期間の行事は始まりと終わりをそれぞれ色分け）
+    var dd = el("span","d");
+    dd.appendChild(dayEl(s.date));
+    if(s.end){ dd.appendChild(document.createTextNode("〜")); dd.appendChild(dayEl(s.end)); }
+    row.appendChild(dd);
     var t = el("span","t", s.title);
     if(s===next) t.appendChild(el("span","tag", dayDiff(s.date)<=0 ? "開催中・今日" : "次のご縁"));
     row.appendChild(t);
