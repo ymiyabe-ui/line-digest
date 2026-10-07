@@ -143,8 +143,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610071122"></script>
-<script src="data.js?v=202610071122"></script>
+<script src="config.js?v=202610071125"></script>
+<script src="data.js?v=202610071125"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -320,7 +320,7 @@
 
   function render(){
     document.getElementById("meta").textContent =
-      "今日："+fmt(today0.getFullYear()+"-"+String(today0.getMonth()+1).padStart(2,"0")+"-"+String(today0.getDate()).padStart(2,"0"))+"\n最終更新："+fmt(D.updated);
+      "最終更新："+fmt(D.updated);
 
     var open = [], noDue = [], expired = [];
     D.todos.forEach(function(t){
