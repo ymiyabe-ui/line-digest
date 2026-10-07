@@ -15,11 +15,11 @@
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-      --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86;}
+      --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86; --peach:#41301f; --peach-line:#8a5f36; --peach-icon:#f0a868;}
   }
   :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
-    --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86;}
-  :root{--link:#3d6b5e; --btn:#2f6f5e; --sky:#dff1fb; --sky-line:#a9d6ee;}
+    --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86; --peach:#41301f; --peach-line:#8a5f36; --peach-icon:#f0a868;}
+  :root{--link:#3d6b5e; --btn:#2f6f5e; --sky:#dff1fb; --sky-line:#a9d6ee; --peach:#fdeadb; --peach-line:#f2c39b; --peach-icon:#c8692a;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif}
   .wrap{max-width:720px;margin:0 auto;padding:16px}
@@ -74,6 +74,8 @@
   .goen{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--sky-line);border-radius:10px;background:var(--sky);color:var(--ink);text-decoration:none;font-size:13px;line-height:1.35;font-weight:700}
   .goen svg{flex:none;width:26px;height:26px;color:var(--accent)}
   .side .goen{align-self:stretch}
+  .goen.apply{background:var(--peach);border-color:var(--peach-line)}
+  .goen.apply svg{color:var(--peach-icon)}
   .ref{font-size:12px;color:var(--sub);margin-top:6px}
   details{margin-top:14px}
   summary{cursor:pointer;font-weight:700;font-size:15px;padding:8px 0;border-bottom:2px solid var(--line)}
@@ -95,7 +97,7 @@
     <div class="side">
       <div class="theme" id="theme" role="group" aria-label="表示の切り替え"><button type="button" data-m="auto">自動</button><button type="button" data-m="light" aria-label="ライト">☼</button><button type="button" data-m="dark" aria-label="ダーク">☾</button></div>
       <a class="goen" href="goen.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="16" cy="14" r="1"/><circle cx="8" cy="17.5" r="1"/></svg><span>先生とのご縁<br>を確認する</span></a>
-      <a class="goen" href="https://script.google.com/macros/s/AKfycbynpe-gRc4mZYIEgTmSO_U-KpE3LRzt35FkvLATDMTDBoL61_7EvFAg8gIbDEcDZ9Rr/exec" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="6" r="2.8"/><path d="M3.5 21v-4.5a5 5 0 0 1 10 0V21"/><circle cx="17" cy="11" r="2"/><path d="M13.8 21v-2.6a3.2 3.2 0 0 1 6.4 0V21"/></svg><span>保育・親子聴聞<br>を申し込む</span></a>
+      <a class="goen apply" href="https://script.google.com/macros/s/AKfycbynpe-gRc4mZYIEgTmSO_U-KpE3LRzt35FkvLATDMTDBoL61_7EvFAg8gIbDEcDZ9Rr/exec" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="6" r="2.8"/><path d="M3.5 21v-4.5a5 5 0 0 1 10 0V21"/><circle cx="17" cy="11" r="2"/><path d="M13.8 21v-2.6a3.2 3.2 0 0 1 6.4 0V21"/></svg><span>保育・親子聴聞<br>を申し込む</span></a>
     </div>
   </div>
   <div class="ikkun" id="ikkun" hidden><div class="day"><b id="ikDay"></b><span>日</span></div><div class="kun" id="ikKun"></div></div>
@@ -145,8 +147,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610071244"></script>
-<script src="data.js?v=202610071244"></script>
+<script src="config.js?v=202610071246"></script>
+<script src="data.js?v=202610071246"></script>
 <script>
 (function(){
   var D = window.DIGEST;
