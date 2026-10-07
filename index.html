@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>案内まとめ｜締切と行事</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap">
 <style>
   :root{
     --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
@@ -22,6 +25,16 @@
   .wrap{max-width:720px;margin:0 auto;padding:16px}
   h1{font-size:20px;margin:4px 0 2px}
   .meta{color:var(--sub);font-size:13px}
+  /* 一日一訓：大きな日にち＋その日の訓（筆文字）。狭い端末は訓を小さくして改行位置を保つ */
+  .ikkun{display:flex;align-items:baseline;gap:10px;margin:10px 0 4px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+  .ikkun .day{flex:none;line-height:1;font-family:"Yuji Syuku","Yu Mincho","Hiragino Mincho ProN",serif}
+  .ikkun .day b{font-size:44px;font-weight:400}
+  .ikkun .day span{font-size:20px;margin-left:2px}
+  .ikkun .kun{min-width:0;font-family:"Yuji Syuku","Yu Mincho","Hiragino Mincho ProN",serif;font-size:16px;line-height:1.6}
+  .ikkun .kun span{display:block}
+  .ikkun rt{font-family:-apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;font-size:.5em;color:var(--sub)}
+  .ikkun[hidden]{display:none}
+  @media (max-width:374px){ .ikkun .kun{font-size:14px} }
   .notice{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin:12px 0;font-size:13px;color:var(--sub)}
   .summary{display:flex;gap:8px;margin:14px 0}
   .sum{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center}
@@ -81,6 +94,7 @@
       <a class="goen" href="goen.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><circle cx="8" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="16" cy="14" r="1"/><circle cx="8" cy="17.5" r="1"/></svg><span>先生とのご縁<br>を確認する</span></a>
     </div>
   </div>
+  <div class="ikkun" id="ikkun" hidden><div class="day"><b id="ikDay"></b><span>日</span></div><div class="kun" id="ikKun"></div></div>
   <div class="meta" id="meta"></div>
   <div class="contact">担当者など不明点やご質問は<a href="https://line.me/ti/p/aS7uMPmBbM" target="_blank" rel="noopener noreferrer">宮部（LINEはこちら）</a>までお願いします。</div>
   <details class="help"><summary>使い方・「済」の保存（タップで開く）</summary>
@@ -128,8 +142,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610071047"></script>
-<script src="data.js?v=202610071047"></script>
+<script src="config.js?v=202610071113"></script>
+<script src="data.js?v=202610071113"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -283,6 +297,24 @@
     return c;
   }
 
+  // 一日一訓：今日の日にちの訓を出す。データがなければ出さない
+  function renderIkkun(){
+    var K = window.IKKUN, d = today0.getDate();
+    if(!K || !K[d-1]) return;
+    document.getElementById("ikDay").textContent = d;
+    var box = document.getElementById("ikKun");
+    K[d-1].split("／").forEach(function(line){
+      var ln = el("span");
+      line.split(/(\[[^\]]+\])/).forEach(function(part){
+        var m = /^\[([^|]+)\|([^\]]+)\]$/.exec(part);
+        if(!m){ if(part) ln.appendChild(document.createTextNode(part)); return; }
+        var r = el("ruby", null, m[1]); r.appendChild(el("rt", null, m[2])); ln.appendChild(r);
+      });
+      box.appendChild(ln);
+    });
+    document.getElementById("ikkun").hidden = false;
+  }
+
   function clear(id){ var n=document.getElementById(id); n.textContent=""; return n; }
 
   function render(){
@@ -345,6 +377,7 @@
   }
   function nextDueLast(t){ return t.due.length ? t.due.map(function(d){return d.date;}).sort().pop() : (t.until||""); }
 
+  renderIkkun();
   render();
   syncUi();
   if(API && num) connect(num);
