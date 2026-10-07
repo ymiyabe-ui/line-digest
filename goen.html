@@ -25,7 +25,8 @@
   .theme button{font-size:13px;line-height:1;min-width:36px;padding:7px 9px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer}
   .theme button:first-child{border-left:0}
   .theme button[aria-pressed="true"]{background:var(--accent);color:var(--card);font-weight:700}
-  .back{display:inline-block;margin:6px 0 4px;font-size:14px;color:var(--link)}
+  .back{display:inline-flex;align-items:center;gap:8px;margin:10px 0 6px;padding:8px 14px 8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-size:15px;font-weight:700}
+  .back svg{flex:none;width:24px;height:24px;color:var(--accent)}
   .meta{color:var(--sub);font-size:13px}
   details{margin-top:14px}
   summary{cursor:pointer;font-weight:700;font-size:15px;padding:8px 0;border-bottom:2px solid var(--line)}
@@ -52,7 +53,7 @@
   <div class="top"><h1>先生とのご縁</h1>
     <div class="theme" id="theme" role="group" aria-label="表示の切り替え"><button type="button" data-m="auto">自動</button><button type="button" data-m="light" aria-label="ライト">☼</button><button type="button" data-m="dark" aria-label="ダーク">☾</button></div>
   </div>
-  <a class="back" href="./">← 案内まとめへ戻る</a>
+  <div><a class="back" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>案内まとめへ戻る</a></div>
   <div class="meta" id="meta"></div>
 
   <details id="schWrap"><summary>二千畳ご講演等の予定（全日程）</summary><div id="schedule"></div></details>
@@ -78,10 +79,15 @@
   apply();
 })();
 </script>
-<script src="data.js"></script>
+<script src="data.js?v=202610071043"></script>
 <script>
 (function(){
   var G = window.GOEN;
+  if(!G){
+    document.getElementById("meta").textContent = "予定を読み込めませんでした。ページを再読み込みしてください。";
+    document.getElementById("schWrap").open = true;
+    return;
+  }
   var WD = ["日","月","火","水","木","金","土"];
 
   // ?today=2026-10-15 で日付を固定して確認できる
