@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>先生とのご縁</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
+    --accent:#2f6f5e; --today:#c0392b; --link:#3d6b5e; --btn:#2f6f5e;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+      --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79;}
+  }
+  :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+    --today:#ef7a6c; --link:#a9c9bd; --btn:#3f8f79;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:16px}
+  h1{font-size:20px;margin:4px 0 2px}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .theme{flex:none;display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+  .theme button{font-size:13px;line-height:1;min-width:36px;padding:7px 9px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer}
+  .theme button:first-child{border-left:0}
+  .theme button[aria-pressed="true"]{background:var(--accent);color:var(--card);font-weight:700}
+  .back{display:inline-block;margin:6px 0 4px;font-size:14px;color:var(--link)}
+  .meta{color:var(--sub);font-size:13px}
+  details{margin-top:14px}
+  summary{cursor:pointer;font-weight:700;font-size:15px;padding:8px 0;border-bottom:2px solid var(--line)}
+  h3{font-size:13px;margin:16px 0 6px;color:var(--sub)}
+  .list{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .item{display:flex;gap:12px;align-items:baseline;padding:8px 12px;border-top:1px solid var(--line);font-size:15px}
+  .item:first-child{border-top:0}
+  .item .d{flex:none;min-width:7.5em;font-weight:700;font-variant-numeric:tabular-nums}
+  .item.past{color:var(--sub)}
+  .item.past .t{text-decoration:line-through}
+  .item.next{box-shadow:inset 4px 0 0 var(--accent)}
+  .tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:1px}
+  .small{font-size:13px;color:var(--sub);margin-top:4px}
+  .links a{display:inline-block;margin:10px 0 4px;padding:6px 14px;border:1px solid var(--btn);border-radius:8px;background:var(--btn);color:#fff;text-decoration:none;font-size:14px}
+  .rec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px}
+  .rec .t{font-weight:700}
+  .rec.past{opacity:.6}
+  .rec.past .t{text-decoration:line-through}
+  footer{margin:28px 0 8px;font-size:12px;color:var(--sub);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>先生とのご縁</h1>
+    <div class="theme" id="theme" role="group" aria-label="表示の切り替え"><button type="button" data-m="auto">自動</button><button type="button" data-m="light" aria-label="ライト">☼</button><button type="button" data-m="dark" aria-label="ダーク">☾</button></div>
+  </div>
+  <a class="back" href="./">← 案内まとめへ戻る</a>
+  <div class="meta" id="meta"></div>
+
+  <details id="schWrap"><summary>二千畳ご講演等の予定（全日程）</summary><div id="schedule"></div></details>
+
+  <details id="recWrap"><summary>先生と学徒との対話（録画聴聞）</summary>
+    <div class="links"><a id="recLink" target="_blank" rel="noopener noreferrer">録画の視聴ページを開く</a></div>
+    <div id="recs"></div>
+  </details>
+
+  <footer>作成・更新：宮部（手動で整理しています）／誤りや抜けがあれば連絡ください</footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, btns=document.querySelectorAll("#theme button");
+  var m="auto"; try{ m=localStorage.getItem("digest-theme")||"auto"; }catch(e){}
+  if(["auto","light","dark"].indexOf(m)<0) m="auto";
+  function apply(){
+    if(m==="auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme",m);
+    for(var i=0;i<btns.length;i++) btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-m")===m ? "true" : "false");
+  }
+  for(var i=0;i<btns.length;i++) btns[i].addEventListener("click",function(){ m=this.getAttribute("data-m"); try{localStorage.setItem("digest-theme",m);}catch(e){} apply(); });
+  apply();
+})();
+</script>
+<script src="data.js"></script>
+<script>
+(function(){
+  var G = window.GOEN;
+  var WD = ["日","月","火","水","木","金","土"];
+
+  // ?today=2026-10-15 で日付を固定して確認できる
+  var q = /[?&]today=(\d{4})-(\d{2})-(\d{2})/.exec(location.search);
+  var now = q ? new Date(+q[1], +q[2]-1, +q[3], 9, 0) : new Date();
+  var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  function parse(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function dayDiff(s){ return Math.round((parse(s)-today0)/86400000); }
+  function fmt(s){ var d=parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"; }
+  function wareki(s){ var d=parse(s); return "令和"+(d.getFullYear()-2018)+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"; }
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  document.getElementById("meta").textContent = "今日："+fmt(today0.getFullYear()+"-"+String(today0.getMonth()+1).padStart(2,"0")+"-"+String(today0.getDate()).padStart(2,"0"));
+
+  // 二千畳ご講演等の予定：月ごとに並べ、過ぎたものは薄く、次のご縁に印を付ける
+  var items = G.schedule.slice().sort(function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; });
+  var next = null;
+  items.forEach(function(s){ if(!next && dayDiff(s.end||s.date) >= 0) next = s; });
+  var box = document.getElementById("schedule"), list = null, cur = "";
+  items.forEach(function(s){
+    var d = parse(s.date), ym = "令和"+(d.getFullYear()-2018)+"年"+(d.getMonth()+1)+"月";
+    if(ym !== cur){ cur = ym; box.appendChild(el("h3",null,ym)); list = el("div","list"); box.appendChild(list); }
+    var past = dayDiff(s.end||s.date) < 0;
+    var row = el("div","item"+(past?" past":"")+(s===next?" next":""));
+    row.appendChild(el("span","d", fmt(s.date)+(s.end?"〜"+fmt(s.end):"")));
+    var t = el("span","t", s.title);
+    if(s===next) t.appendChild(el("span","tag", dayDiff(s.date)<=0 ? "開催中・今日" : "次のご縁"));
+    row.appendChild(t);
+    list.appendChild(row);
+  });
+
+  // 対話の録画：視聴期限の近い順。期限を過ぎたものは薄く
+  document.getElementById("recLink").href = G.recUrl;
+  var rb = document.getElementById("recs");
+  G.recordings.slice().sort(function(a,b){ return a.until<b.until?-1:1; }).forEach(function(r){
+    var past = dayDiff(r.until) < 0;
+    var c = el("div","rec"+(past?" past":""));
+    c.appendChild(el("div","t","先生と学徒との対話（"+wareki(r.date)+"）"));
+    c.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+fmt(r.until)+" "+r.until_time+"まで）" : fmt(r.until)+" "+r.until_time+" まで視聴できます"));
+    rb.appendChild(c);
+  });
+})();
+</script>
+</body>
+</html>
