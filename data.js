@@ -33,6 +33,15 @@ window.DIGEST = {
       ref: "9/28 17:12／10/4 14:09"
     },
     {
+      id: "hoiku-1108",
+      title: "11/8(日) 保育・親子聴聞の申込",
+      due: [{ label: "締切", date: "2026-10-23" }],
+      target: "11/8にお子さん連れで参加される方（保育・親子聴聞）",
+      note: "このページ右上の「保育・親子聴聞を申し込む」からも申し込めます。",
+      links: [{ label: "申込フォーム（Web版）", url: "https://script.google.com/macros/s/AKfycbynpe-gRc4mZYIEgTmSO_U-KpE3LRzt35FkvLATDMTDBoL61_7EvFAg8gIbDEcDZ9Rr/exec" }],
+      ref: "10/10"
+    },
+    {
       id: "hoiku-2026aki",
       title: "報恩講・秋の集い 保育・親子聴聞部屋の申込",
       due: [
