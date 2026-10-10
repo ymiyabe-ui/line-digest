@@ -131,6 +131,9 @@
   <details id="pastWrap"><summary id="pastSum">締切を過ぎたもの・終わった行事</summary><div id="past"></div></details>
   <details><summary>読み物（新聞・メルマガなど）</summary><div id="reads"></div></details>
 
+  <h2>教学の振り返り（道しるべ・教学聖典）</h2>
+  <div class="card"><div class="links" id="kyogaku" style="margin-top:-6px"></div></div>
+
   <footer>作成・更新：宮部（手動で整理しています）／誤りや抜けがあれば連絡ください</footer>
 </div>
 
@@ -147,8 +150,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610071248"></script>
-<script src="data.js?v=202610071248"></script>
+<script src="config.js?v=202610102345"></script>
+<script src="data.js?v=202610102345"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -380,10 +383,16 @@
       c.appendChild(el("div","small",fmt(r.date))); c.appendChild(a); rb.appendChild(c);
     });
   }
+  function renderKyogaku(){
+    var box = document.getElementById("kyogaku"), K = window.KYOGAKU || [];
+    K.forEach(function(k){ var a = el("a",null,k.label); a.href=k.url; a.target="_blank"; a.rel="noopener noreferrer"; box.appendChild(a); });
+    if(!K.length) box.parentNode.parentNode.removeChild(box.parentNode);
+  }
   function nextDueLast(t){ return t.due.length ? t.due.map(function(d){return d.date;}).sort().pop() : (t.until||""); }
 
   renderIkkun();
   render();
+  renderKyogaku();
   syncUi();
   if(API && num) connect(num);
 })();
