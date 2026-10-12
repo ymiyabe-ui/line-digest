@@ -153,8 +153,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610121018"></script>
-<script src="data.js?v=202610121018"></script>
+<script src="config.js?v=202610121020"></script>
+<script src="data.js?v=202610121020"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -388,12 +388,6 @@
 
     // 要対応
     var box = clear("todos");
-    // 先生と学徒との対話：1週間前から、残り日数とライブ用ボタンを要対応の先頭にも出す
-    var tw = taiwaEvents();
-    if(tw.length){
-      box.appendChild(el("h3",null,"先生と学徒との対話"));
-      tw.forEach(function(e){ box.appendChild(eventCard(e)); });
-    }
     LEVELS.forEach(function(L){
       var items = open.filter(function(t){ return L.test(dayDiff(nextDue(t).date)); });
       if(!items.length) return;
@@ -404,7 +398,7 @@
       var h2 = el("h3",null,"締切の記載なし（早めの連絡を）"); box.appendChild(h2);
       noDue.forEach(function(t){ box.appendChild(todoCard(t)); });
     }
-    if(!open.length && !noDue.length && !tw.length) box.appendChild(el("div","empty","対応が必要な案内はありません。"));
+    if(!open.length && !noDue.length) box.appendChild(el("div","empty","対応が必要な案内はありません。"));
 
     // 行事
     var evUp = D.events.concat(taiwaEvents()).filter(function(e){ return dayDiff(e.end||e.start) >= 0; }).sort(function(a,b){var x=a.start+(a.time||"").replace(/^(\d:)/,"0$1"),y=b.start+(b.time||"").replace(/^(\d:)/,"0$1");return x<y?-1:x>y?1:0;});

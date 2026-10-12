@@ -88,7 +88,7 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610121018"></script>
+<script src="data.js?v=202610121020"></script>
 <script>
 (function(){
   var G = window.GOEN;
@@ -134,17 +134,25 @@
     list.appendChild(row);
   });
 
-  // PICK UP：直近の二千畳（対話以外の予定すべて。ご講演・Q&A・新春大会・初聞法会・報恩講など）と、直近の先生と学徒との対話を1件ずつ日程付きで出す
+  // PICK UP：直近の二千畳（対話・秋の集い以外の予定。ご講演・Q&A・新春大会・初聞法会・報恩講など）と、
+  // 直近の先生と学徒との対話を1件ずつ日程付きで出す。秋の集いは関連として添える。
+  // 同じ題名が連日（報恩講の土日など）なら、1件にまとめて両日を出す。
   var pickBox = document.getElementById("pickItems");
-  [function(s){ return s.title!=="先生と学徒との対話"; }, function(s){ return s.title==="先生と学徒との対話"; }].forEach(function(test){
+  [function(s){ return s.title!=="先生と学徒との対話" && s.title!=="秋の集い"; }, function(s){ return s.title==="先生と学徒との対話"; }].forEach(function(test, k){
     var s = items.filter(function(x){ return test(x) && dayDiff(x.end||x.date) >= 0; })[0];
     if(!s) return;
+    var days = items.filter(function(x){ return x.title===s.title && x.date>=s.date && dayDiff(x.date)-dayDiff(s.date) <= 1; });
     var c = el("div","rec");
     var body = el("div","body");
-    var t = el("div","t"); t.appendChild(dayEl(s.date));
+    var t = el("div","t");
+    days.forEach(function(x, idx){ if(idx) t.appendChild(document.createTextNode("・")); t.appendChild(dayEl(x.date)); });
     if(s.end){ t.appendChild(document.createTextNode("〜")); t.appendChild(dayEl(s.end)); }
     t.appendChild(document.createTextNode("　"+s.title));
     body.appendChild(t);
+    if(k===0){
+      var rel = items.filter(function(x){ return x.title==="秋の集い" && dayDiff(x.end||x.date) >= 0 && x.date<=(days[days.length-1].date) && (x.end||x.date)>=s.date; })[0];
+      if(rel){ var sm = el("div","small","関連："); sm.appendChild(dayEl(rel.date)); sm.appendChild(document.createTextNode("〜")); sm.appendChild(dayEl(rel.end||rel.date)); sm.appendChild(document.createTextNode("　"+rel.title)); body.appendChild(sm); }
+    }
     c.appendChild(body);
     var n = dayDiff(s.date), b = el("span","left", n<0 ? "開催中" : n===0 ? "本日" : "開始まで残り"+n+"日");
     b.style.background = n<=0 ? "var(--today)" : n<=3 ? "var(--soon)" : n<=7 ? "var(--week)" : "var(--later)";
