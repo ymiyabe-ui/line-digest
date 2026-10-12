@@ -150,8 +150,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610120958"></script>
-<script src="data.js?v=202610120958"></script>
+<script src="config.js?v=202610121000"></script>
+<script src="data.js?v=202610121000"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -292,7 +292,16 @@
     var t = el("div","title");
     var n0 = dayDiff(e.start);
     if(e.countdown && n0>=0){
-      var cb = el("span","badge", n0===0?"本日開催":"開始まで残り"+n0+"日");
+      var txt = "開始まで残り"+n0+"日";
+      if(n0===0){
+        txt = "本日開催";
+        var m = /^(\d{1,2}):(\d{2})/.exec(e.time||"");
+        if(m){
+          var left = Math.floor((new Date(today0.getFullYear(), today0.getMonth(), today0.getDate(), +m[1], +m[2]) - new Date())/60000);
+          txt = left>0 ? "開始まで残り"+Math.floor(left/60)+"時間"+(left%60)+"分" : "開催中";
+        }
+      }
+      var cb = el("span","badge", txt);
       cb.style.background = n0===0 ? "var(--today)" : n0<=3 ? "var(--soon)" : "var(--week)";
       t.appendChild(cb);
     }
@@ -320,7 +329,7 @@
     }).filter(function(s){
       return !D.events.some(function(e){ return e.start===s.date && /対話/.test(e.title); });
     }).map(function(s){
-      return {id:"taiwa-"+s.date, title:"先生と学徒との対話", start:s.date, time:"", place:"", note:"詳しくは「先生とのご縁を確認する」から。", countdown:true};
+      return {id:"taiwa-"+s.date, title:"先生と学徒との対話", start:s.date, time:"13:30", place:"", note:"詳しくは「先生とのご縁を確認する」から。", countdown:true};
     });
   }
 
