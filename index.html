@@ -153,8 +153,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610121020"></script>
-<script src="data.js?v=202610121020"></script>
+<script src="config.js?v=202610121023"></script>
+<script src="data.js?v=202610121023"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -169,6 +169,17 @@
   function dayDiff(s){ return Math.round((parse(s)-today0)/86400000); }
   function fmt(s){ var d=parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"; }
   // 土曜を青、日曜を赤にした日付（goen.html と同じ配色）
+  // 文中の「10/17(土)」「11/8(日)」も、土曜を青・日曜を赤にして node に追加する
+  function addText(node, text){
+    var re=/\d{1,2}\/\d{1,2}\((土|日)\)/g, last=0, m;
+    while((m=re.exec(text))){
+      if(m.index>last) node.appendChild(document.createTextNode(text.slice(last,m.index)));
+      node.appendChild(el("span", m[1]==="土"?"sat":"sun", m[0]));
+      last=m.index+m[0].length;
+    }
+    if(last<text.length) node.appendChild(document.createTextNode(text.slice(last)));
+    return node;
+  }
   function fmtC(s){ var w=parse(s).getDay(), sp=el("span", w===6?"sat":w===0?"sun":null, fmt(s)); return sp; }
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
@@ -264,7 +275,7 @@
     var tt = el("div","title");
     var nd = nextDue(t);
     if(nd) tt.appendChild(badgeFor(dayDiff(nd.date)));
-    tt.appendChild(document.createTextNode(t.title));
+    addText(tt, t.title);
     body.appendChild(tt);
 
     if(t.due.length){
@@ -280,8 +291,8 @@
     } else {
       body.appendChild(el("div","small","締切の記載なし"));
     }
-    if(t.target) body.appendChild(el("div","small","対象："+t.target));
-    if(t.note) body.appendChild(el("div","small",t.note));
+    if(t.target) body.appendChild(addText(el("div","small"),"対象："+t.target));
+    if(t.note) body.appendChild(addText(el("div","small"),t.note));
     if(t.links && t.links.length){
       var ln = el("div","links");
       t.links.forEach(function(l){
@@ -316,11 +327,11 @@
     d.appendChild(fmtC(e.start));
     if(e.end){ d.appendChild(document.createTextNode("〜")); d.appendChild(fmtC(e.end)); }
     d.appendChild(document.createTextNode("　"));
-    t.appendChild(d); t.appendChild(document.createTextNode(e.title));
+    t.appendChild(d); addText(t, e.title);
     c.appendChild(t);
     var when = [e.time, e.place].filter(Boolean).join("／");
     if(when) c.appendChild(el("div","small",when));
-    if(e.note) c.appendChild(el("div","small",e.note));
+    if(e.note) c.appendChild(addText(el("div","small"),e.note));
     if(e.links && e.links.length){
       var ln = el("div","links");
       e.links.forEach(function(l){ var a=el("a",l.primary?"primary":null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
