@@ -11,13 +11,13 @@
 <style>
   :root{
     --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
-    --accent:#2f6f5e; --today:#c0392b; --soon:#d9822b; --week:#b59a2f; --later:#5b7c99;
+    --accent:#2f6f5e; --sat:#2a5db0; --sun:#c0392b; --today:#c0392b; --soon:#d9822b; --week:#b59a2f; --later:#5b7c99;
   }
   @media (prefers-color-scheme:dark){
-    :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+    :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8; --sat:#8fb4ec; --sun:#ef8a7c;
       --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86; --peach:#41301f; --peach-line:#8a5f36; --peach-icon:#f0a868;}
   }
-  :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+  :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8; --sat:#8fb4ec; --sun:#ef8a7c;
     --today:#ef7a6c; --soon:#eaa155; --week:#d6bf57; --later:#8fb0cc; --link:#a9c9bd; --btn:#3f8f79; --sky:#1f3b4a; --sky-line:#3d6e86; --peach:#41301f; --peach-line:#8a5f36; --peach-icon:#f0a868;}
   :root{--link:#3d6b5e; --btn:#2f6f5e; --sky:#dff1fb; --sky-line:#a9d6ee; --peach:#fdeadb; --peach-line:#f2c39b; --peach-icon:#c8692a;}
   *{box-sizing:border-box}
@@ -60,6 +60,7 @@
   .dues .next{font-weight:700}
   .small{font-size:13px;color:var(--sub);margin-top:4px}
   a{color:var(--link)}
+  .links a.primary{background:var(--btn);border-color:var(--btn);color:#fff;font-weight:700}
   .links a{display:inline-block;margin:6px 8px 0 0;padding:5px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--link);text-decoration:none;font-size:14px}
   .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
   .side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
@@ -80,6 +81,8 @@
   details{margin-top:14px}
   summary{cursor:pointer;font-weight:700;font-size:15px;padding:8px 0;border-bottom:2px solid var(--line)}
   .evdate{font-weight:700;font-variant-numeric:tabular-nums}
+  .sat{color:var(--sat)}
+  .sun{color:var(--sun)}
   .empty{color:var(--sub);font-size:14px;padding:8px 0}
   .sync{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:12px 0;font-size:14px}
   .sync .line{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
@@ -150,8 +153,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610121000"></script>
-<script src="data.js?v=202610121000"></script>
+<script src="config.js?v=202610121008"></script>
+<script src="data.js?v=202610121008"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -165,6 +168,8 @@
   function parse(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
   function dayDiff(s){ return Math.round((parse(s)-today0)/86400000); }
   function fmt(s){ var d=parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"; }
+  // 土曜を青、日曜を赤にした日付（goen.html と同じ配色）
+  function fmtC(s){ var w=parse(s).getDay(), sp=el("span", w===6?"sat":w===0?"sun":null, fmt(s)); return sp; }
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
   var store = {};
@@ -266,7 +271,9 @@
       var ul = el("ul","dues");
       t.due.slice().sort(function(a,b){return a.date<b.date?-1:1;}).forEach(function(d){
         var li = el("li", dayDiff(d.date)<0?"past":(nd&&d===nd?"next":""));
-        li.textContent = d.label+"："+fmt(d.date)+(d.time?" "+d.time:"")+(d.note?"（"+d.note+"）":"");
+        li.appendChild(document.createTextNode(d.label+"："));
+        li.appendChild(fmtC(d.date));
+        li.appendChild(document.createTextNode((d.time?" "+d.time:"")+(d.note?"（"+d.note+"）":"")));
         ul.appendChild(li);
       });
       body.appendChild(ul);
@@ -305,7 +312,10 @@
       cb.style.background = n0===0 ? "var(--today)" : n0<=3 ? "var(--soon)" : "var(--week)";
       t.appendChild(cb);
     }
-    var d = el("span","evdate", fmt(e.start)+(e.end?"〜"+fmt(e.end):"")+"　");
+    var d = el("span","evdate");
+    d.appendChild(fmtC(e.start));
+    if(e.end){ d.appendChild(document.createTextNode("〜")); d.appendChild(fmtC(e.end)); }
+    d.appendChild(document.createTextNode("　"));
     t.appendChild(d); t.appendChild(document.createTextNode(e.title));
     c.appendChild(t);
     var when = [e.time, e.place].filter(Boolean).join("／");
@@ -313,7 +323,7 @@
     if(e.note) c.appendChild(el("div","small",e.note));
     if(e.links && e.links.length){
       var ln = el("div","links");
-      e.links.forEach(function(l){ var a=el("a",null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
+      e.links.forEach(function(l){ var a=el("a",l.primary?"primary":null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
       c.appendChild(ln);
     }
     if(e.ref) c.appendChild(el("div","ref","元投稿："+e.ref));
@@ -329,7 +339,8 @@
     }).filter(function(s){
       return !D.events.some(function(e){ return e.start===s.date && /対話/.test(e.title); });
     }).map(function(s){
-      return {id:"taiwa-"+s.date, title:"先生と学徒との対話", start:s.date, time:"13:30", place:"", note:"詳しくは「先生とのご縁を確認する」から。", countdown:true};
+      return {id:"taiwa-"+s.date, title:"先生と学徒との対話", start:s.date, time:"13:30", place:"", note:"詳しくは「先生とのご縁を確認する」から。", countdown:true,
+              links:[{label:"当日聴聞の方はこちら", url:"https://www3.gkt.jp/taiwa/index.php", primary:true}]};
     });
   }
 
@@ -408,7 +419,7 @@
     var rb = clear("reads");
     D.reads.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(r){
       var c = el("div","card"); var a = el("a",null,r.title); a.href=r.url; a.target="_blank"; a.rel="noopener noreferrer";
-      c.appendChild(el("div","small",fmt(r.date))); c.appendChild(a); rb.appendChild(c);
+      var rd = el("div","small"); rd.appendChild(fmtC(r.date)); c.appendChild(rd); c.appendChild(a); rb.appendChild(c);
     });
   }
   function renderKyogaku(){
