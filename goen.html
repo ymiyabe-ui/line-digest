@@ -88,7 +88,7 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610121014"></script>
+<script src="data.js?v=202610121018"></script>
 <script>
 (function(){
   var G = window.GOEN;
@@ -134,17 +134,19 @@
     list.appendChild(row);
   });
 
-  // PICK UP：直近の二千畳（ご講演・Q&A）と、直近の先生と学徒との対話を1件ずつ日程付きで出す
+  // PICK UP：直近の二千畳（対話以外の予定すべて。ご講演・Q&A・新春大会・初聞法会・報恩講など）と、直近の先生と学徒との対話を1件ずつ日程付きで出す
   var pickBox = document.getElementById("pickItems");
-  [function(s){ return s.title.indexOf("二千畳")>=0; }, function(s){ return s.title==="先生と学徒との対話"; }].forEach(function(test){
+  [function(s){ return s.title!=="先生と学徒との対話"; }, function(s){ return s.title==="先生と学徒との対話"; }].forEach(function(test){
     var s = items.filter(function(x){ return test(x) && dayDiff(x.end||x.date) >= 0; })[0];
     if(!s) return;
     var c = el("div","rec");
     var body = el("div","body");
-    var t = el("div","t"); t.appendChild(dayEl(s.date)); t.appendChild(document.createTextNode("　"+s.title));
+    var t = el("div","t"); t.appendChild(dayEl(s.date));
+    if(s.end){ t.appendChild(document.createTextNode("〜")); t.appendChild(dayEl(s.end)); }
+    t.appendChild(document.createTextNode("　"+s.title));
     body.appendChild(t);
     c.appendChild(body);
-    var n = dayDiff(s.date), b = el("span","left", n<=0 ? "本日" : "開始まで残り"+n+"日");
+    var n = dayDiff(s.date), b = el("span","left", n<0 ? "開催中" : n===0 ? "本日" : "開始まで残り"+n+"日");
     b.style.background = n<=0 ? "var(--today)" : n<=3 ? "var(--soon)" : n<=7 ? "var(--week)" : "var(--later)";
     c.appendChild(b);
     pickBox.appendChild(c);
