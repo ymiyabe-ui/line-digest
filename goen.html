@@ -63,6 +63,8 @@
   <div><a class="back" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>案内まとめへ戻る</a></div>
   <div class="meta" id="meta"></div>
 
+  <div id="pickup" hidden><h3>PICK UP</h3><div id="pickItems"></div></div>
+
   <details id="schWrap"><summary>二千畳ご講演等の予定（全日程）</summary><div id="schedule"></div></details>
 
   <details id="recWrap"><summary>先生と学徒との対話（録画聴聞）</summary>
@@ -86,7 +88,7 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610121008"></script>
+<script src="data.js?v=202610121014"></script>
 <script>
 (function(){
   var G = window.GOEN;
@@ -131,6 +133,23 @@
     row.appendChild(t);
     list.appendChild(row);
   });
+
+  // PICK UP：直近の二千畳（ご講演・Q&A）と、直近の先生と学徒との対話を1件ずつ日程付きで出す
+  var pickBox = document.getElementById("pickItems");
+  [function(s){ return s.title.indexOf("二千畳")>=0; }, function(s){ return s.title==="先生と学徒との対話"; }].forEach(function(test){
+    var s = items.filter(function(x){ return test(x) && dayDiff(x.end||x.date) >= 0; })[0];
+    if(!s) return;
+    var c = el("div","rec");
+    var body = el("div","body");
+    var t = el("div","t"); t.appendChild(dayEl(s.date)); t.appendChild(document.createTextNode("　"+s.title));
+    body.appendChild(t);
+    c.appendChild(body);
+    var n = dayDiff(s.date), b = el("span","left", n<=0 ? "本日" : "開始まで残り"+n+"日");
+    b.style.background = n<=0 ? "var(--today)" : n<=3 ? "var(--soon)" : n<=7 ? "var(--week)" : "var(--later)";
+    c.appendChild(b);
+    pickBox.appendChild(c);
+  });
+  if(pickBox.children.length) document.getElementById("pickup").hidden = false;
 
   // 対話の録画：視聴期限の近い順。期限を過ぎたものは薄く
   document.getElementById("recLink").href = G.recUrl;
