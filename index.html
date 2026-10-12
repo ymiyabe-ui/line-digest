@@ -150,8 +150,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610102348"></script>
-<script src="data.js?v=202610102348"></script>
+<script src="config.js?v=202610120958"></script>
+<script src="data.js?v=202610120958"></script>
 <script>
 (function(){
   var D = window.DIGEST;
@@ -290,6 +290,12 @@
   function eventCard(e){
     var c = el("div","card");
     var t = el("div","title");
+    var n0 = dayDiff(e.start);
+    if(e.countdown && n0>=0){
+      var cb = el("span","badge", n0===0?"本日開催":"開始まで残り"+n0+"日");
+      cb.style.background = n0===0 ? "var(--today)" : n0<=3 ? "var(--soon)" : "var(--week)";
+      t.appendChild(cb);
+    }
     var d = el("span","evdate", fmt(e.start)+(e.end?"〜"+fmt(e.end):"")+"　");
     t.appendChild(d); t.appendChild(document.createTextNode(e.title));
     c.appendChild(t);
@@ -301,8 +307,21 @@
       e.links.forEach(function(l){ var a=el("a",null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
       c.appendChild(ln);
     }
-    c.appendChild(el("div","ref","元投稿："+e.ref));
+    if(e.ref) c.appendChild(el("div","ref","元投稿："+e.ref));
     return c;
+  }
+
+  // 先生と学徒との対話：「先生とのご縁」の予定表から、1週間前になったら行事欄に自動で出す
+  function taiwaEvents(){
+    var S = (window.GOEN && GOEN.schedule) || [];
+    return S.filter(function(s){
+      var n = dayDiff(s.date);
+      return s.title==="先生と学徒との対話" && n>=0 && n<=7;
+    }).filter(function(s){
+      return !D.events.some(function(e){ return e.start===s.date && /対話/.test(e.title); });
+    }).map(function(s){
+      return {id:"taiwa-"+s.date, title:"先生と学徒との対話", start:s.date, time:"", place:"", note:"詳しくは「先生とのご縁を確認する」から。", countdown:true};
+    });
   }
 
   // 一日一訓：今日の日にちの訓を出す。データがなければ出さない
@@ -361,7 +380,7 @@
     if(!open.length && !noDue.length) box.appendChild(el("div","empty","対応が必要な案内はありません。"));
 
     // 行事
-    var evUp = D.events.filter(function(e){ return dayDiff(e.end||e.start) >= 0; }).sort(function(a,b){return a.start<b.start?-1:1;});
+    var evUp = D.events.concat(taiwaEvents()).filter(function(e){ return dayDiff(e.end||e.start) >= 0; }).sort(function(a,b){var x=a.start+(a.time||"").replace(/^(\d:)/,"0$1"),y=b.start+(b.time||"").replace(/^(\d:)/,"0$1");return x<y?-1:x>y?1:0;});
     var evPast = D.events.filter(function(e){ return dayDiff(e.end||e.start) < 0; }).sort(function(a,b){return a.start<b.start?1:-1;});
     var eb = clear("events");
     evUp.forEach(function(e){ eb.appendChild(eventCard(e)); });
