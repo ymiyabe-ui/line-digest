@@ -88,7 +88,18 @@
   apply();
 })();
 </script>
-<script src="data.js?v=202610121023"></script>
+<script src="config.js?v=202610121032"></script>
+<script src="data.js?v=202610121032"></script>
+<script>
+// GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
+(function(){
+  var c = window.GOATCOUNTER_CODE; if(!c) return;
+  var s = document.createElement("script"); s.async = true;
+  s.src = "https://gc.zgo.at/count.js";
+  s.setAttribute("data-goatcounter", "https://"+c+".goatcounter.com/count");
+  document.body.appendChild(s);
+})();
+</script>
 <script>
 (function(){
   var G = window.GOEN;
