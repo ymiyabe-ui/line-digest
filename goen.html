@@ -52,6 +52,35 @@
   .rec .t{font-weight:700}
   .rec .left{flex:none;font-size:14px;font-weight:700;color:#fff;border-radius:999px;padding:3px 12px;white-space:nowrap}
   .rec.past{opacity:.6}
+  /* 高森先生座談会の見出し：右横にお布施の納め方のボタン（押しても開閉しない） */
+  .zahead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .zahead::-webkit-details-marker{display:none}
+  .zahead span::before{content:"▶";display:inline-block;font-size:11px;margin-right:6px;transition:transform .15s}
+  details[open] > .zahead span::before{transform:rotate(90deg)}
+  .zahead{list-style:none}
+  .fuse{flex:none;padding:6px 10px;border:1px solid var(--btn);border-radius:8px;background:var(--card);color:var(--link);text-decoration:none;font-size:12px;line-height:1.35;text-align:center;font-weight:700}
+  .fusenote{margin:10px 0 6px;font-size:14px;color:var(--today);font-weight:700}
+  .fusenote a{color:inherit}
+  /* 高森先生座談会：回ごとの箱。前後半のある回は中にもう一段畳む。チェックした動画は薄くする（取り消し線は引かない） */
+  .za{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-top:8px;padding:0 12px}
+  .za > summary{border-bottom:0;padding:10px 0}
+  .za[open] > summary{border-bottom:1px solid var(--line)}
+  .za.single{padding:0}
+  .za .tag{background:var(--sub)}
+  .zv{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .zv:first-of-type{border-top:0}
+  .za.single .zv{padding:10px 12px}
+  .zv input{width:22px;height:22px;flex:none;accent-color:var(--accent)}
+  .zv .body{flex:1;min-width:0}
+  .zv .t{font-weight:700}
+  .zv a{flex:none;padding:6px 12px;border:1px solid var(--btn);border-radius:8px;background:var(--btn);color:#fff;text-decoration:none;font-size:14px;white-space:nowrap}
+  .zv.done{opacity:.45}
+  .za.done > summary{opacity:.45}
+  .za .note{margin:4px 0 10px;border-top:1px solid var(--line)}
+  .za .note summary{font-size:14px;border-bottom:0;padding:8px 0 4px}
+  .za .note p{margin:6px 0;font-size:14px}
+  .za .note .links a{margin-right:8px}
+  .za .note .links a.ghost{background:transparent;color:var(--link)}
   footer{margin:28px 0 8px;font-size:12px;color:var(--sub);text-align:center}
 </style>
 </head>
@@ -71,6 +100,11 @@
     <div class="links"><a id="recLink" target="_blank" rel="noopener noreferrer">録画の視聴ページを開く</a></div>
     <div id="recs"></div>
   </details>
+  <details id="zaWrap" hidden><summary class="zahead"><span>高森先生座談会</span><a class="fuse" href="https://www.gkt.jp/#/videos/3894" target="_blank" rel="noopener noreferrer">聞かせて頂いたお礼の<br>お布施の納め方</a></summary>
+    <div class="fusenote">座談会を聞かせて頂いたお礼のお布施は、<a href="https://www.gkt.jp/#/videos/3894" target="_blank" rel="noopener noreferrer">遷移先</a>から各自で納めていただくか<a href="https://line.me/ti/p/aS7uMPmBbM" target="_blank" rel="noopener noreferrer">宮部</a>までご相談ください。</div>
+    <div class="small">視聴期限はありません。見終わった動画はチェックを付けると薄くなります（この端末の中だけに保存）。</div>
+    <div id="zadankai"></div>
+  </details>
 
   <footer>作成・更新：宮部（手動で整理しています）／誤りや抜けがあれば連絡ください</footer>
 </div>
@@ -88,8 +122,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610161235"></script>
-<script src="data.js?v=202610161235"></script>
+<script src="config.js?v=202610180008"></script>
+<script src="data.js?v=202610180008"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -190,6 +224,64 @@
     }
     rb.appendChild(c);
   });
+
+  // 高森先生座談会：回ごとに並べる。前後半のある回は畳み、補足（資料）はその回の中にさらに畳む
+  var Z = window.ZADANKAI;
+  if(Z && Z.length){
+    var zst = {};
+    try { zst = JSON.parse(localStorage.getItem("goen-zadankai")||"{}"); } catch(e){}
+    var zbox = document.getElementById("zadankai");
+    Z.forEach(function(z){
+      var multi = z.videos.length > 1;
+      var box = el(multi?"details":"div", "za"+(multi?"":" single"));
+      var sum = null;
+      if(multi){ sum = el("summary"); box.appendChild(sum); }
+      var rows = [];
+      z.videos.forEach(function(v){
+        var row = el("div","zv");
+        var cb = el("input"); cb.type="checkbox"; cb.setAttribute("aria-label","見た");
+        var body = el("div","body");
+        body.appendChild(el("div","t", multi ? v.part : "高森先生座談会（"+z.no+"回目）"));
+        body.appendChild(el("div","small", v.length));
+        var a = el("a",null,"視聴ページへ"); a.href=v.url; a.target="_blank"; a.rel="noopener noreferrer";
+        row.appendChild(cb); row.appendChild(body); row.appendChild(a);
+        cb.addEventListener("change", function(){
+          if(cb.checked) zst[v.url]=1; else delete zst[v.url];
+          try{ localStorage.setItem("goen-zadankai", JSON.stringify(zst)); }catch(e){}
+          paint();
+        });
+        rows.push({row:row, cb:cb, v:v});
+        box.appendChild(row);
+      });
+      if(z.note){
+        var nd = el("details","note");
+        nd.appendChild(el("summary",null,z.note.title));
+        z.note.text.forEach(function(t){ nd.appendChild(el("p",null,t)); });
+        if(z.note.file){
+          var ln = el("div","links");
+          var o = el("a","ghost",z.note.file.view); o.href=z.note.file.url; o.target="_blank"; o.rel="noopener noreferrer"; ln.appendChild(o);
+          var dl = el("a",null,z.note.file.dlLabel); dl.href=z.note.file.dlUrl; dl.target="_blank"; dl.rel="noopener noreferrer"; ln.appendChild(dl);
+          nd.appendChild(ln);
+        }
+        box.appendChild(nd);
+      }
+      function paint(){
+        var all = true;
+        rows.forEach(function(r){ var on = !!zst[r.v.url]; r.cb.checked = on; r.row.className = "zv"+(on?" done":""); if(!on) all = false; });
+        if(sum){
+          sum.textContent = "高森先生座談会（"+z.no+"回目）";
+          sum.appendChild(el("span","small","　"+z.videos.map(function(v){ return v.part; }).join("・")));
+          if(all) sum.appendChild(el("span","tag","見た"));
+          box.className = "za"+(all?" done":"");
+        }
+      }
+      paint();
+      zbox.appendChild(box);
+    });
+    document.getElementById("zaWrap").hidden = false;
+    // ボタンを押したときは、格納を開閉せずに遷移だけする
+    document.querySelector("#zaWrap .fuse").addEventListener("click", function(e){ e.stopPropagation(); });
+  }
 })();
 </script>
 </body>

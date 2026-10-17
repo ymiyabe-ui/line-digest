@@ -400,11 +400,79 @@ window.GOEN = {
     { date: "2027-10-24", title: "親鸞聖人報恩講" }
   ],
   recordings: [
-    { date: "2026-07-22", until: "2026-10-14", until_time: "13:30" },
     { date: "2026-08-19", until: "2026-11-25", until_time: "13:30" },
-    { date: "2026-09-30", until: "2026-12-16", until_time: "13:30" }
+    { date: "2026-09-30", until: "2026-12-16", until_time: "13:30" },
+    { date: "2026-10-14", until: "2027-01-20", until_time: "13:30" }
   ]
 };
+
+// 高森先生座談会（goen.html の「高森先生座談会」）。視聴期限なし。
+// no は回、videos は前半・後半（1回だけのものは part を空に）。note は回の下に畳んで出す補足と資料。
+// 「済」のチェックは、その端末の中だけに video の url で保存する。
+window.ZADANKAI = [
+  { no: 1, videos: [
+      { part: "", length: "54分13秒", url: "https://www.gkt.jp/#/videos/3708" }
+    ] },
+  { no: 2, videos: [
+      { part: "前半", length: "39分53秒", url: "https://www.gkt.jp/#/videos/3709" },
+      { part: "後半", length: "38分36秒", url: "https://www.gkt.jp/#/videos/3710" }
+    ] },
+  { no: 3, videos: [
+      { part: "前半", length: "34分19秒", url: "https://www.gkt.jp/#/videos/3743" },
+      { part: "後半", length: "38分19秒", url: "https://www.gkt.jp/#/videos/3744" }
+    ] },
+  { no: 4, videos: [
+      { part: "前半", length: "29分31秒", url: "https://www.gkt.jp/#/videos/3777" },
+      { part: "後半", length: "29分27秒", url: "https://www.gkt.jp/#/videos/3778" }
+    ] },
+  { no: 5, videos: [
+      { part: "前半", length: "27分34秒", url: "https://www.gkt.jp/#/videos/3819" },
+      { part: "後半", length: "28分01秒", url: "https://www.gkt.jp/#/videos/3820" }
+    ] },
+  { no: 6, videos: [
+      { part: "前半", length: "28分46秒", url: "https://www.gkt.jp/#/videos/3858" },
+      { part: "後半", length: "29分12秒", url: "https://www.gkt.jp/#/videos/3859" }
+    ] },
+  { no: 7, videos: [
+      { part: "前半", length: "36分28秒", url: "https://www.gkt.jp/#/videos/3890" },
+      { part: "後半", length: "25分56秒", url: "https://www.gkt.jp/#/videos/3891" }
+    ] },
+  { no: 8, videos: [
+      { part: "前半", length: "37分26秒", url: "https://www.gkt.jp/#/videos/3932" },
+      { part: "後半", length: "37分18秒", url: "https://www.gkt.jp/#/videos/3933" }
+    ] },
+  { no: 9, videos: [
+      { part: "前半", length: "25分21秒", url: "https://www.gkt.jp/#/videos/4013" },
+      { part: "後半", length: "36分38秒", url: "https://www.gkt.jp/#/videos/4014" }
+    ] },
+  { no: 10, videos: [
+      { part: "前半", length: "21分26秒", url: "https://www.gkt.jp/#/videos/4051" },
+      { part: "後半", length: "19分40秒", url: "https://www.gkt.jp/#/videos/4052" }
+    ] },
+  { no: 11, videos: [
+      { part: "前半", length: "26分32秒", url: "https://www.gkt.jp/#/videos/4087" },
+      { part: "後半", length: "20分28秒", url: "https://www.gkt.jp/#/videos/4088" }
+    ] },
+  { no: 12, videos: [
+      { part: "前半", length: "28分47秒", url: "https://www.gkt.jp/#/videos/4115" },
+      { part: "後半", length: "18分19秒", url: "https://www.gkt.jp/#/videos/4116" }
+    ] },
+  { no: 13, videos: [
+      { part: "前半", length: "21分54秒", url: "https://www.gkt.jp/#/videos/4133" },
+      { part: "後半", length: "21分00秒", url: "https://www.gkt.jp/#/videos/4134" }
+    ],
+    note: {
+      title: "使用された資料について",
+      text: [
+        "高森先生座談会１３回目では「雑行雑修自力の心資料」というプリントが使用されました。",
+        "この資料は全７ページありますが、１３回目の座談会では２ページ目のお話がありました。",
+        "「雑行雑修自力の心資料」は、下記の「資料ダウンロード」を押すと受け取ることができます。",
+        "なお学徒サイトからダウンロードしたPDFファイルを印刷し、必要な方に手渡すことができます。配布の対象は、希望する学徒全員です。"
+      ],
+      // 閲覧はこのサイトのPDF、ダウンロードは学徒サイトのページへ
+      file: { view: "資料を見る", url: "files/zougyou-zasshu-jiriki.pdf", dlLabel: "資料ダウンロード", dlUrl: "https://www.gkt.jp/#/videos/4131" }
+    } }
+];
 
 // 一日一訓（日付の欄に、その日の日にちの訓を表示する）。1日〜31日の順。
 // 「／」で改行。[漢字|よみ] はふりがな（ルビ）になる。原文の表記（氣・かヽろう）は直さない。
