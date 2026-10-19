@@ -3,7 +3,7 @@
 // until は締切のない案内の掲載終了日（行事の日付）。過ぎると「過ぎたもの」へ移る。
 // ref は元投稿の日時（トークで探すための目印）。
 window.DIGEST = {
-  updated: "2026-10-16",
+  updated: "2026-10-19",
   todos: [
     {
       id: "koden-1031",
@@ -67,9 +67,9 @@ window.DIGEST = {
       title: "11/8(日) 保育・親子聴聞の申込",
       due: [{ label: "締切", date: "2026-10-23" }],
       target: "11/8にお子さん連れで参加される方（保育・親子聴聞）",
-      note: "このページ右上の「保育・親子聴聞を申し込む」からも申し込めます。",
+      note: "このページ右上の「保育・親子聴聞を申し込む」からも申し込めます。10/18に「締切10/23(金)」とリマインドあり。",
       links: [{ label: "申込フォーム（Web版）", url: "https://script.google.com/macros/s/AKfycbynpe-gRc4mZYIEgTmSO_U-KpE3LRzt35FkvLATDMTDBoL61_7EvFAg8gIbDEcDZ9Rr/exec" }],
-      ref: "10/10"
+      ref: "10/10／10/18 23:34"
     },
     {
       id: "hoiku-2026aki",
