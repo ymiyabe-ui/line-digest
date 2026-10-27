@@ -91,6 +91,17 @@
   .sync button.ghost{background:transparent;color:var(--link)}
   .sync .st{font-size:13px;color:var(--sub);margin-top:6px}
   .sync .st.err{color:var(--today)}
+  /* 月の予定一覧：日ごとに時刻・行事・場所を詰めて並べる。過ぎた日は薄く */
+  .month .day{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+  .month .day:first-child{border-top:0}
+  .month .day.past{opacity:.45}
+  .month .day.today{background:var(--sky);margin:0 -12px;padding:7px 12px}
+  .month .d{flex:none;width:58px;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+  .month ul{margin:0;padding:0;list-style:none;font-size:14px;min-width:0}
+  .month li{padding:1px 0}
+  .month li .tm{display:inline-block;min-width:92px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .month li .pl{color:var(--sub);font-size:13px}
+  .month li.star{font-weight:700}
   footer{margin:28px 0 8px;font-size:12px;color:var(--sub);text-align:center}
 </style>
 </head>
@@ -131,6 +142,8 @@
   <h2>これからの行事</h2>
   <div id="events"></div>
 
+  <div id="months"></div>
+
   <details id="pastWrap"><summary id="pastSum">締切を過ぎたもの・終わった行事</summary><div id="past"></div></details>
   <details><summary>読み物（新聞・メルマガなど）</summary><div id="reads"></div></details>
 
@@ -153,8 +166,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610191113"></script>
-<script src="data.js?v=202610191113"></script>
+<script src="config.js?v=202610271733"></script>
+<script src="data.js?v=202610271733"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -449,10 +462,51 @@
     K.forEach(function(k){ var a = el("a",null,k.label); a.href=k.url; a.target="_blank"; a.rel="noopener noreferrer"; box.appendChild(a); });
     if(!K.length) box.parentNode.parentNode.removeChild(box.parentNode);
   }
+  // 月の予定一覧：今月・来月以降の分だけ出す（月が終わったら出さない）
+  function renderMonthly(){
+    var box = document.getElementById("months"), M = window.MONTHLY || [];
+    var cur = today0.getFullYear()+"-"+("0"+(today0.getMonth()+1)).slice(-2);
+    M.filter(function(m){ return m.month >= cur; }).forEach(function(m){
+      var det = el("details"); det.open = true;
+      det.appendChild(el("summary",null,m.title));
+      var c = el("div","card month");
+      if(m.note) c.appendChild(el("div","small",m.note));
+      var byDate = {};
+      m.items.forEach(function(it){ (byDate[it.date] = byDate[it.date] || []).push(it); });
+      Object.keys(byDate).sort().forEach(function(d){
+        var n = dayDiff(d);
+        var row = el("div","day"+(n<0?" past":n===0?" today":""));
+        var dl = el("div","d"); dl.appendChild(fmtC(d)); row.appendChild(dl);
+        var ul = el("ul");
+        byDate[d].sort(function(a,b){ return a.time.replace(/^(\d:)/,"0$1") < b.time.replace(/^(\d:)/,"0$1") ? -1 : 1; }).forEach(function(it){
+          var li = el("li", /^★/.test(it.title) ? "star" : null);
+          li.appendChild(el("span","tm",it.time));
+          li.appendChild(document.createTextNode(it.title));
+          if(it.place) li.appendChild(el("span","pl","　＠"+it.place));
+          ul.appendChild(li);
+        });
+        row.appendChild(ul); c.appendChild(row);
+      });
+      if(m.legend && m.legend.length){
+        var lg = el("details"); lg.appendChild(el("summary",null,"行事の説明"));
+        var lu = el("ul","small"); lu.style.paddingLeft = "18px";
+        m.legend.forEach(function(x){ lu.appendChild(el("li",null,x)); });
+        lg.appendChild(lu); c.appendChild(lg);
+      }
+      if(m.links && m.links.length){
+        var ln = el("div","links");
+        m.links.forEach(function(l){ var a=el("a",null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
+        c.appendChild(ln);
+      }
+      if(m.ref) c.appendChild(el("div","ref","元投稿："+m.ref+"（日程表のPDF）"));
+      det.appendChild(c); box.appendChild(det);
+    });
+  }
   function nextDueLast(t){ return t.due.length ? t.due.map(function(d){return d.date;}).sort().pop() : (t.until||""); }
 
   renderIkkun();
   render();
+  renderMonthly();
   renderKyogaku();
   syncUi();
   if(API && num) connect(num);
