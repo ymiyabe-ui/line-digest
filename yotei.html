@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>月の予定一覧</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#fff; --ink:#26231f; --sub:#6b655c; --line:#e3ded3;
+    --accent:#2f6f5e; --link:#3d6b5e; --btn:#2f6f5e; --sat:#2a5db0; --sun:#c0392b; --sky:#dff1fb;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+      --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c; --sky:#1f3b4a;}
+  }
+  :root[data-theme="dark"]{--bg:#1c1b19; --card:#26251f; --ink:#eeeae0; --sub:#a39d90; --line:#3a382f; --accent:#6fbfa8;
+    --link:#a9c9bd; --btn:#3f8f79; --sat:#8fb4ec; --sun:#ef8a7c; --sky:#1f3b4a;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:16px}
+  h1{font-size:20px;margin:4px 0 2px}
+  h2{font-size:16px;margin:22px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--line)}
+  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .theme{flex:none;display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+  .theme button{font-size:14px;line-height:1;min-width:38px;padding:7px 10px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--sub);cursor:pointer}
+  .theme button:first-child{border-left:0}
+  /* ライト＝クリーム地に濃い茶、ダーク＝紺地に白。表示中の色に関係なく同じ色で、形（☼／☾）でも区別できる */
+  .theme button[data-m="light"]{background:#fff2c2;color:#6b4a00}
+  .theme button[data-m="dark"]{background:#26324f;color:#f0f3ff}
+  .theme button[aria-pressed="true"]{font-weight:700;box-shadow:inset 0 0 0 3px var(--ink)}
+  .theme button[data-m="auto"][aria-pressed="true"]{background:var(--accent);color:var(--card);box-shadow:none}
+  .back{display:inline-flex;align-items:center;gap:8px;margin:10px 0 6px;padding:8px 14px 8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-size:15px;font-weight:700}
+  .back svg{flex:none;width:24px;height:24px;color:var(--accent)}
+  .small{font-size:13px;color:var(--sub);margin-top:4px}
+  .ref{font-size:12px;color:var(--sub);margin-top:8px}
+  .sat{color:var(--sat)}
+  .sun{color:var(--sun)}
+  /* 日ごとに時刻・行事・場所を詰めて並べる。過ぎた日は薄く、今日は色を付ける */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 12px 12px}
+  .day{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+  .day:first-child{border-top:0}
+  .day.past{opacity:.45}
+  .day.today{background:var(--sky);margin:0 -12px;padding:7px 12px}
+  .d{flex:none;width:58px;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums}
+  .day ul{margin:0;padding:0;list-style:none;font-size:14px;min-width:0}
+  .day li{padding:1px 0}
+  .tm{display:inline-block;min-width:92px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .pl{color:var(--sub);font-size:13px}
+  li.star{font-weight:700}
+  details{margin-top:10px}
+  summary{cursor:pointer;font-weight:700;font-size:14px;padding:6px 0}
+  .legend{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--sub)}
+  .links a{display:inline-block;margin:10px 8px 0 0;padding:6px 14px;border:1px solid var(--btn);border-radius:8px;background:var(--btn);color:#fff;text-decoration:none;font-size:14px}
+  .empty{color:var(--sub);font-size:14px;padding:12px 0}
+  footer{margin:28px 0 8px;font-size:12px;color:var(--sub);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>月の予定一覧</h1>
+    <div class="theme" id="theme" role="group" aria-label="表示の切り替え"><button type="button" data-m="auto">自動</button><button type="button" data-m="light" aria-label="ライト">☼</button><button type="button" data-m="dark" aria-label="ダーク">☾</button></div>
+  </div>
+  <div><a class="back" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>案内まとめへ戻る</a></div>
+
+  <div id="months"></div>
+
+  <footer>作成・更新：宮部（手動で整理しています）／誤りや抜けがあれば連絡ください</footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, btns=document.querySelectorAll("#theme button");
+  var m="auto"; try{ m=localStorage.getItem("digest-theme")||"auto"; }catch(e){}
+  if(["auto","light","dark"].indexOf(m)<0) m="auto";
+  function apply(){
+    if(m==="auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme",m);
+    for(var i=0;i<btns.length;i++) btns[i].setAttribute("aria-pressed", btns[i].getAttribute("data-m")===m ? "true" : "false");
+  }
+  for(var i=0;i<btns.length;i++) btns[i].addEventListener("click",function(){ m=this.getAttribute("data-m"); try{localStorage.setItem("digest-theme",m);}catch(e){} apply(); });
+  apply();
+})();
+</script>
+<script src="config.js?v=202610271739"></script>
+<script src="data.js?v=202610271739"></script>
+<script>
+// GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
+(function(){
+  var c = window.GOATCOUNTER_CODE; if(!c) return;
+  var s = document.createElement("script"); s.async = true;
+  s.src = "https://gc.zgo.at/count.js";
+  s.setAttribute("data-goatcounter", "https://"+c+".goatcounter.com/count");
+  document.body.appendChild(s);
+})();
+</script>
+<script>
+(function(){
+  var WD = ["日","月","火","水","木","金","土"];
+
+  // ?today=2026-11-10 で日付を固定して確認できる
+  var q = /[?&]today=(\d{4})-(\d{2})-(\d{2})/.exec(location.search);
+  var now = q ? new Date(+q[1], +q[2]-1, +q[3], 9, 0) : new Date();
+  var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  function parse(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function dayDiff(s){ return Math.round((parse(s)-today0)/86400000); }
+  function fmt(s){ var d=parse(s); return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"; }
+  function dayEl(s){ var w=parse(s).getDay(); return el("span", w===6?"sat":w===0?"sun":null, fmt(s)); }
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+  function hm(t){ return t.replace(/^(\d:)/,"0$1"); }
+
+  // 今月・来月以降の分だけ出す（月が終わったら出さない）
+  var box = document.getElementById("months"), M = window.MONTHLY || [];
+  var cur = today0.getFullYear()+"-"+("0"+(today0.getMonth()+1)).slice(-2);
+  var shown = M.filter(function(m){ return m.month >= cur; }).sort(function(a,b){ return a.month<b.month?-1:1; });
+  shown.forEach(function(m){
+    box.appendChild(el("h2",null,m.title));
+    if(m.note) box.appendChild(el("div","small",m.note));
+    var c = el("div","card");
+    var byDate = {};
+    m.items.forEach(function(it){ (byDate[it.date] = byDate[it.date] || []).push(it); });
+    Object.keys(byDate).sort().forEach(function(d){
+      var n = dayDiff(d);
+      var row = el("div","day"+(n<0?" past":n===0?" today":""));
+      var dl = el("div","d"); dl.appendChild(dayEl(d)); row.appendChild(dl);
+      var ul = el("ul");
+      byDate[d].sort(function(a,b){ return hm(a.time) < hm(b.time) ? -1 : 1; }).forEach(function(it){
+        var li = el("li", /^★/.test(it.title) ? "star" : null);
+        li.appendChild(el("span","tm",it.time));
+        li.appendChild(document.createTextNode(it.title));
+        if(it.place) li.appendChild(el("span","pl","　＠"+it.place));
+        ul.appendChild(li);
+      });
+      row.appendChild(ul); c.appendChild(row);
+    });
+    box.appendChild(c);
+    if(m.legend && m.legend.length){
+      var lg = el("details"); lg.appendChild(el("summary",null,"行事の説明"));
+      var lu = el("ul","legend");
+      m.legend.forEach(function(x){ lu.appendChild(el("li",null,x)); });
+      lg.appendChild(lu); box.appendChild(lg);
+    }
+    if(m.links && m.links.length){
+      var ln = el("div","links");
+      m.links.forEach(function(l){ var a=el("a",null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a); });
+      box.appendChild(ln);
+    }
+    if(m.ref) box.appendChild(el("div","ref","元投稿："+m.ref+"（日程表のPDF）"));
+  });
+  if(!shown.length) box.appendChild(el("div","empty","いま載せている月の予定はありません。"));
+})();
+</script>
+</body>
+</html>
