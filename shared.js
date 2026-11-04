@@ -19,7 +19,7 @@ window.SHARED = {
           "url": "https://www.gkt.jp/#/videos/4206"
         }
       ],
-      "ref": ""
+      "ref": "10/27 17:19"
     }
   ],
   "events": [

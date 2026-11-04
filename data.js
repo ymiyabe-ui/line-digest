@@ -12,7 +12,7 @@ window.DIGEST = {
       target: "",
       note: "令和8年 秋の集いのフィナーレ。",
       links: [{ label: "視聴ページ", url: "https://www.gkt.jp/#/videos/4206" }],
-      ref: ""
+      ref: "10/27 17:19"
     },
     {
       id: "koden-1031",
