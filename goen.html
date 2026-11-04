@@ -122,8 +122,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202611041347"></script>
-<script src="data.js?v=202611041347"></script>
+<script src="config.js?v=202611041351"></script>
+<script src="data.js?v=202611041351"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -213,15 +213,15 @@
     var past = dayDiff(r.until) < 0;
     var c = el("div","rec"+(past?" past":""));
     var body = el("div","body");
-    var t = el("div","t");
-    if(r.url){
-      var a = el("a","",(r.title||"先生と学徒との対話")+"（"+wareki(r.date)+"）");
-      a.href = r.url; a.target = "_blank"; a.rel = "noopener noreferrer";
-      t.appendChild(a);
-    } else t.textContent = (r.title||"先生と学徒との対話")+"（"+wareki(r.date)+"）";
-    body.appendChild(t);
+    body.appendChild(el("div","t",(r.title||"先生と学徒との対話")+"（"+wareki(r.date)+"）"));
     var ut = fmt(r.until)+(r.until_time ? " "+r.until_time : "");
     body.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+ut+"まで）" : ut+" まで視聴できます"));
+    // 対話以外の録画は、その録画の視聴ページへのボタンを付ける
+    if(r.url && !past){
+      var ln = el("div","links"), a = el("a",null,"▶ 視聴ページを開く");
+      a.href = r.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      ln.appendChild(a); body.appendChild(ln);
+    }
     c.appendChild(body);
     // 視聴期限までの残り日数を、案内まとめの締切と同じ色分けで右側に出す
     if(!past){

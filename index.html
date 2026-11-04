@@ -155,8 +155,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202611041347"></script>
-<script src="data.js?v=202611041347"></script>
+<script src="config.js?v=202611041351"></script>
+<script src="data.js?v=202611041351"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -308,7 +308,7 @@
     if(t.links && t.links.length){
       var ln = el("div","links");
       t.links.forEach(function(l){
-        var a = el("a",null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a);
+        var a = el("a",l.primary?"primary":null,l.label); a.href=l.url; a.target="_blank"; a.rel="noopener noreferrer"; ln.appendChild(a);
       });
       body.appendChild(ln);
     }

@@ -15,8 +15,9 @@ window.SHARED = {
       "note": "令和8年 秋の集いのフィナーレ。",
       "links": [
         {
-          "label": "視聴ページ",
-          "url": "https://www.gkt.jp/#/videos/4206"
+          "label": "▶ 視聴ページを開く",
+          "url": "https://www.gkt.jp/#/videos/4206",
+          "primary": true
         }
       ],
       "ref": "10/27 17:19"
