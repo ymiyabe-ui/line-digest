@@ -3,8 +3,17 @@
 // until は締切のない案内の掲載終了日（行事の日付）。過ぎると「過ぎたもの」へ移る。
 // ref は元投稿の日時（トークで探すための目印）。
 window.DIGEST = {
-  updated: "2026-10-27",
+  updated: "2026-11-04",
   todos: [
+    {
+      id: "all-finale-rec-1130",
+      title: "報恩講・秋の集いフィナーレ（10/28公開）の視聴",
+      due: [{ label: "視聴期限", date: "2026-11-30" }],
+      target: "",
+      note: "令和8年 秋の集いのフィナーレ。",
+      links: [{ label: "視聴ページ", url: "https://www.gkt.jp/#/videos/4206" }],
+      ref: ""
+    },
     {
       id: "koden-1031",
       title: "高森先生へのご香典",
@@ -451,7 +460,7 @@ window.KYOGAKU = [
 
 // 「先生とのご縁」ページ（goen.html）のデータ。
 // schedule：二千畳のご縁の年間予定（end は複数日の行事の最終日）
-// recordings：先生と学徒との対話の録画（until・until_time までの視聴）
+// recordings：先生と学徒との対話の録画（until・until_time までの視聴）。title・url があればその名前とリンクで出す（対話以外の録画）
 window.GOEN = {
   recUrl: "https://www3.gkt.jp/taiwa/rec/index.php",
   schedule: [
@@ -505,7 +514,8 @@ window.GOEN = {
   recordings: [
     { date: "2026-08-19", until: "2026-11-25", until_time: "13:30" },
     { date: "2026-09-30", until: "2026-12-16", until_time: "13:30" },
-    { date: "2026-10-14", until: "2027-01-20", until_time: "13:30" }
+    { date: "2026-10-14", until: "2027-01-20", until_time: "13:30" },
+    { date: "2026-10-28", until: "2026-11-30", title: "報恩講・秋の集いフィナーレ", url: "https://www.gkt.jp/#/videos/4206" }
   ]
 };
 

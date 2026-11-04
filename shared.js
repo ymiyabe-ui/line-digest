@@ -1,7 +1,27 @@
 // 全地区共通の案内（自動生成。手で直さない。もとは tools/line-digest/data.js の all- の項目）
 window.SHARED = {
-  "updated": "2026-10-27",
-  "todos": [],
+  "updated": "2026-11-04",
+  "todos": [
+    {
+      "id": "all-finale-rec-1130",
+      "title": "報恩講・秋の集いフィナーレ（10/28公開）の視聴",
+      "due": [
+        {
+          "label": "視聴期限",
+          "date": "2026-11-30"
+        }
+      ],
+      "target": "",
+      "note": "令和8年 秋の集いのフィナーレ。",
+      "links": [
+        {
+          "label": "視聴ページ",
+          "url": "https://www.gkt.jp/#/videos/4206"
+        }
+      ],
+      "ref": ""
+    }
+  ],
   "events": [
     {
       "id": "all-ev-finale-1028",

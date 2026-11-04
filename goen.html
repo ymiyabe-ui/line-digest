@@ -96,7 +96,7 @@
 
   <details id="schWrap"><summary>二千畳ご講演等の予定（全日程）</summary><div id="schedule"></div></details>
 
-  <details id="recWrap"><summary>先生と学徒との対話（録画聴聞）</summary>
+  <details id="recWrap"><summary>先生と学徒との対話ほか（録画聴聞）</summary>
     <div class="links"><a id="recLink" target="_blank" rel="noopener noreferrer">録画の視聴ページを開く</a></div>
     <div id="recs"></div>
   </details>
@@ -122,8 +122,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202610271739"></script>
-<script src="data.js?v=202610271739"></script>
+<script src="config.js?v=202611041345"></script>
+<script src="data.js?v=202611041345"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -213,8 +213,15 @@
     var past = dayDiff(r.until) < 0;
     var c = el("div","rec"+(past?" past":""));
     var body = el("div","body");
-    body.appendChild(el("div","t","先生と学徒との対話（"+wareki(r.date)+"）"));
-    body.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+fmt(r.until)+" "+r.until_time+"まで）" : fmt(r.until)+" "+r.until_time+" まで視聴できます"));
+    var t = el("div","t");
+    if(r.url){
+      var a = el("a","",(r.title||"先生と学徒との対話")+"（"+wareki(r.date)+"）");
+      a.href = r.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+      t.appendChild(a);
+    } else t.textContent = (r.title||"先生と学徒との対話")+"（"+wareki(r.date)+"）";
+    body.appendChild(t);
+    var ut = fmt(r.until)+(r.until_time ? " "+r.until_time : "");
+    body.appendChild(el("div","small", past ? "視聴期限を過ぎました（"+ut+"まで）" : ut+" まで視聴できます"));
     c.appendChild(body);
     // 視聴期限までの残り日数を、案内まとめの締切と同じ色分けで右側に出す
     if(!past){
