@@ -1,6 +1,6 @@
 // 全地区共通の案内（自動生成。手で直さない。もとは tools/line-digest/data.js の all- の項目）
 window.SHARED = {
-  "updated": "2026-11-04",
+  "updated": "2026-11-09",
   "todos": [
     {
       "id": "all-finale-rec-1130",
@@ -12,7 +12,7 @@ window.SHARED = {
         }
       ],
       "target": "",
-      "note": "令和8年 秋の集いのフィナーレ。",
+      "note": "令和8年 秋の集いのフィナーレ。親鸞聖人の「ご臨末の御書」を通して約15分間の高森先生のご説法。",
       "links": [
         {
           "label": "▶ 視聴ページを開く",
@@ -20,7 +20,7 @@ window.SHARED = {
           "primary": true
         }
       ],
-      "ref": "10/27 17:19"
+      "ref": "10/27 17:19／11/7 21:31"
     }
   ],
   "events": [
