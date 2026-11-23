@@ -55,8 +55,14 @@
   /* 高森先生座談会の見出し：右横にお布施の納め方のボタン（押しても開閉しない） */
   .zahead{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .zahead::-webkit-details-marker{display:none}
-  .zahead span::before{content:"▶";display:inline-block;font-size:11px;margin-right:6px;transition:transform .15s}
-  details[open] > .zahead span::before{transform:rotate(90deg)}
+  .zahead > span::before{content:"▶";display:inline-block;font-size:11px;margin-right:6px;transition:transform .15s}
+  details[open] > .zahead > span::before{transform:rotate(90deg)}
+  /* 二河白道（左に火の河・右に水の河・間に白道、道の先に西岸の光）の印と、赤・白・青の下線 */
+  #zaWrap > .zahead{position:relative;border-bottom:0;padding-bottom:10px}
+  #zaWrap > .zahead::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:2px;background:linear-gradient(90deg,#c0392b 0 48.5%,#fff 48.5% 51.5%,#2a5db0 51.5% 100%);box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  .zahead > span{display:flex;align-items:center;font-size:16px}
+  .zamark{flex:none;display:block;width:38px;height:38px;margin-right:8px;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .zamark svg{display:block}
   .zahead{list-style:none}
   .fuse{flex:none;padding:6px 10px;border:1px solid var(--btn);border-radius:8px;background:var(--card);color:var(--link);text-decoration:none;font-size:12px;line-height:1.35;text-align:center;font-weight:700}
   .fusenote{margin:10px 0 6px;font-size:14px;color:var(--today);font-weight:700}
@@ -100,7 +106,7 @@
     <div class="links"><a id="recLink" target="_blank" rel="noopener noreferrer">録画の視聴ページを開く</a></div>
     <div id="recs"></div>
   </details>
-  <details id="zaWrap" hidden><summary class="zahead"><span>高森先生座談会</span><a class="fuse" href="https://www.gkt.jp/#/videos/3894" target="_blank" rel="noopener noreferrer">聞かせて頂いたお礼の<br>お布施の納め方</a></summary>
+  <details id="zaWrap" hidden><summary class="zahead"><span><i class="zamark"><svg viewBox="0 0 38 38" width="38" height="38" aria-hidden="true"><rect width="19" height="38" fill="#b8321f"/><rect x="19" width="19" height="38" fill="#21509c"/><path d="M1,40 C1,30 4,27.6 5,20 C6.4,29 9,31.6 9,40 Z" fill="#f07a2e" opacity=".6"/><path d="M3.8,40 C3.8,34 5.5,32.6 6,28 C6.8,33.4 8.2,35 8.2,40 Z" fill="#f8c04a" opacity=".55"/><path d="M8,40 C8,26 11,22.6 12,12 C13.4,24.6 16,28.2 16,40 Z" fill="#f07a2e" opacity=".6"/><path d="M10.8,40 C10.8,31.6 12.5,29.6 13,23.2 C13.8,30.8 15.2,32.9 15.2,40 Z" fill="#f8c04a" opacity=".55"/><path d="M21,12 q7,-2.5 14,0 q7,-2.5 14,0" fill="none" stroke="#9cc0f0" stroke-width="1.6" stroke-linecap="round" opacity=".7"/><path d="M24,22 q7,-2.5 14,0" fill="none" stroke="#9cc0f0" stroke-width="1.6" stroke-linecap="round" opacity=".6"/><path d="M21,32 q7,-2.5 14,0 q7,-2.5 14,0" fill="none" stroke="#9cc0f0" stroke-width="1.6" stroke-linecap="round" opacity=".5"/><circle cx="19" cy="3" r="9" fill="#fff3c4" opacity=".55"/><polygon points="16,38 22,38 19.6,4 18.4,4" fill="#fff"/></svg></i>高森先生座談会</span><a class="fuse" href="https://www.gkt.jp/#/videos/3894" target="_blank" rel="noopener noreferrer">聞かせて頂いたお礼の<br>お布施の納め方</a></summary>
     <div class="fusenote">座談会を聞かせて頂いたお礼のお布施は、<a href="https://www.gkt.jp/#/videos/3894" target="_blank" rel="noopener noreferrer">遷移先</a>から各自で納めていただくか<a href="https://line.me/ti/p/aS7uMPmBbM" target="_blank" rel="noopener noreferrer">宮部</a>までご相談ください。</div>
     <div class="small">視聴期限はありません。見終わった動画はチェックを付けると薄くなります（この端末の中だけに保存）。</div>
     <div id="zadankai"></div>
@@ -122,8 +128,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202611151835"></script>
-<script src="data.js?v=202611151835"></script>
+<script src="config.js?v=202611231031"></script>
+<script src="data.js?v=202611231031"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
