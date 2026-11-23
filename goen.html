@@ -32,6 +32,12 @@
   .back{display:inline-flex;align-items:center;gap:8px;margin:10px 0 6px;padding:8px 14px 8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-size:15px;font-weight:700}
   .back svg{flex:none;width:24px;height:24px;color:var(--accent)}
   .meta{color:var(--sub);font-size:13px}
+  /* 見出しへ飛ぶボタン（押すと、閉じている見出しは開いてから、そこまで動く） */
+  .jump{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0 2px}
+  .jump a{display:flex;align-items:center;justify-content:center;min-height:40px;padding:6px 4px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-size:13px;font-weight:700;line-height:1.3;text-align:center}
+  .jump a[hidden]{display:none}
+  .jump a.za-j{background:linear-gradient(90deg,#c0392b 0 48.5%,#fff 48.5% 51.5%,#2a5db0 51.5% 100%) left bottom/100% 3px no-repeat,var(--card)}
+  details{scroll-margin-top:8px}
   details{margin-top:14px}
   summary{cursor:pointer;font-weight:700;font-size:15px;padding:8px 0;border-bottom:2px solid var(--line)}
   h3{font-size:13px;margin:16px 0 6px;color:var(--sub)}
@@ -97,6 +103,7 @@
   </div>
   <div><a class="back" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>案内まとめへ戻る</a></div>
   <div class="meta" id="meta"></div>
+  <nav class="jump" aria-label="このページの見出しへ移動"><a href="#schWrap">ご講演等の予定</a><a href="#recWrap">録画聴聞</a><a href="#zaWrap" class="za-j" hidden>高森先生座談会</a></nav>
 
   <div id="pickup" hidden><h3>PICK UP</h3><div id="pickItems"></div></div>
 
@@ -128,8 +135,8 @@
   apply();
 })();
 </script>
-<script src="config.js?v=202611231031"></script>
-<script src="data.js?v=202611231031"></script>
+<script src="config.js?v=202611231035"></script>
+<script src="data.js?v=202611231035"></script>
 <script>
 // GoatCounter：config.js にサイトコードがあるときだけ、閲覧数を計測する（Cookieなし）
 (function(){
@@ -292,10 +299,23 @@
       zbox.appendChild(box);
     });
     document.getElementById("zaWrap").hidden = false;
+    document.querySelector(".jump .za-j").hidden = false;
     // ボタンを押したときは、格納を開閉せずに遷移だけする
     document.querySelector("#zaWrap .fuse").addEventListener("click", function(e){ e.stopPropagation(); });
   }
 })();
+</script>
+<script>
+// 見出しへ飛ぶボタン：閉じている見出しは開いてから、そこまでなめらかに動く
+Array.prototype.forEach.call(document.querySelectorAll(".jump a"), function(a){
+  a.addEventListener("click", function(e){
+    var t = document.getElementById(a.getAttribute("href").slice(1));
+    if(!t || t.hidden) return;
+    e.preventDefault();
+    if(t.tagName === "DETAILS") t.open = true;
+    t.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+});
 </script>
 </body>
 </html>
