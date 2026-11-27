@@ -719,6 +719,7 @@ window.GOEN = {
     { date: "2026-08-19", until: "2026-11-25", until_time: "13:30" },
     { date: "2026-09-30", until: "2026-12-16", until_time: "13:30" },
     { date: "2026-10-14", until: "2027-01-20", until_time: "13:30" },
+    { date: "2026-11-25", until: "2027-02-24", until_time: "13:30" },
     { date: "2026-10-28", until: "2026-11-30", title: "報恩講・秋の集いフィナーレ", url: "https://www.gkt.jp/#/videos/4206" }
   ]
 };
