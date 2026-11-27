@@ -1,6 +1,6 @@
 // 全地区共通の案内（自動生成。手で直さない。もとは tools/line-digest/data.js の all- の項目）
 window.SHARED = {
-  "updated": "2026-11-23",
+  "updated": "2026-11-27",
   "todos": [
     {
       "id": "all-finale-rec-1130",
@@ -20,7 +20,7 @@ window.SHARED = {
           "primary": true
         }
       ],
-      "ref": "10/27 17:19／11/7 21:31"
+      "ref": "10/27 17:19／11/7 21:31／11/23 10:21"
     }
   ],
   "events": [
