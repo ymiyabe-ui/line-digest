@@ -716,7 +716,6 @@ window.GOEN = {
     { date: "2027-10-24", title: "親鸞聖人報恩講" }
   ],
   recordings: [
-    { date: "2026-08-19", until: "2026-11-25", until_time: "13:30" },
     { date: "2026-09-30", until: "2026-12-16", until_time: "13:30" },
     { date: "2026-10-14", until: "2027-01-20", until_time: "13:30" },
     { date: "2026-11-25", until: "2027-02-24", until_time: "13:30" },
